@@ -1,186 +1,3094 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>RENEWAL ADMIN | Dashboard</title>
-  
-  <!-- Anti-Cache Meta Tags -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RENEWAL ADMIN | অ্যাডমিন প্যানেল</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style nonce="{{ nonce }}">
+/* ============================================================
+   RENEWAL BLOOD NETWORK — Core Design System
+   ============================================================ */
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="/static/admin/css/main.css" />
-  <link rel="stylesheet" href="/static/admin/css/animations.css" />
-  <link rel="stylesheet" href="/static/admin/css/components.css" />
-  <link rel="stylesheet" href="/static/admin/css/admin.css" />
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+/* ── CSS Custom Properties ── */
+:root {
+  /* Colors */
+  --blood-red:      #E11D48;
+  --blood-dark:     #BE123C;
+  --blood-light:    #F43F5E;
+  --emergency:      #DC2626;
+  --emergency-glow: rgba(220, 38, 38, 0.25);
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  --verified-green: #059669;
+  --verified-dim:   #ECFDF5;
+  --pending-amber:  #D97706;
+  --pending-dim:    #FFFBEB;
+  --review-blue:    #2563EB;
+  --review-dim:     #EFF6FF;
+  --rejected-gray:  #64748B;
+  --completed-teal: #0D9488;
+
+  /* Backgrounds */
+  --bg-void:        #F1F5F9;
+  --bg-dark:        #F8FAFC;
+  --bg-surface:     #FFFFFF;
+  --bg-card:        #FFFFFF;
+  --bg-card-hover:  #F8FAFC;
+  --bg-glass:       rgba(255, 255, 255, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.98);
+  --bg-overlay:     rgba(15, 23, 42, 0.6);
+
+  /* Borders */
+  --border:         #E2E8F0;
+  --border-active:  #E11D48;
+  --border-card:    #E2E8F0;
+
+  /* Text */
+  --text-primary:   #0F172A;
+  --text-secondary: #475569;
+  --text-muted:     #64748B;
+  --text-red:       #E11D48;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md:   0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg:   0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-red:  0 4px 20px rgba(225, 29, 72, 0.2);
+  --shadow-glow: 0 0 40px rgba(225, 29, 72, 0.12);
+
+  /* Gradients */
+  --grad-red:    linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+  --grad-hero:   radial-gradient(ellipse at top, rgba(225, 29, 72, 0.06) 0%, transparent 70%);
+  --grad-card:   linear-gradient(135deg, #FFFFFF 0%, #FFF5F6 100%);
+  --grad-glass:  linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+
+  /* Spacing */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Border Radius */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Typography */
+  --font-bn:   'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+  --font-en:   'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Z-index */
+  --z-base:    1;
+  --z-dropdown:100;
+  --z-sticky:  200;
+  --z-overlay: 300;
+  --z-modal:   400;
+  --z-toast:   500;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-en);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+/* Selection */
+::selection { background: rgba(225, 29, 72, 0.18); color: var(--text-primary); }
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bn);
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+p { color: var(--text-secondary); line-height: 1.75; }
+
+a {
+  color: var(--blood-light);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+a:hover { color: var(--text-primary); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* ── Layout Utilities ── */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.container--wide {
+  max-width: 1400px;
+}
+
+.section {
+  padding: var(--space-3xl) 0;
+}
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1; }
+
+.grid { display: grid; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.text-center { text-align: center; }
+.text-right  { text-align: right; }
+
+.text-sm   { font-size: 0.875rem; }
+.text-xs   { font-size: 0.75rem; }
+.text-lg   { font-size: 1.125rem; }
+.text-xl   { font-size: 1.25rem; }
+.text-2xl  { font-size: 1.5rem; }
+
+.font-bn { font-family: var(--font-bn); }
+.font-mono { font-family: var(--font-mono); }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+
+.text-muted   { color: var(--text-muted); }
+.text-secondary { color: var(--text-secondary); }
+.text-red     { color: var(--blood-red); }
+.text-green   { color: var(--verified-green); }
+.text-amber   { color: var(--pending-amber); }
+.text-blue    { color: var(--review-blue); }
+
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.w-full { width: 100%; }
+.relative { position: relative; }
+.hidden { display: none !important; }
+
+/* ── Glass Effect ── */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+.glass-card {
+  background: var(--grad-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: all var(--transition-normal);
+}
+
+.glass-card:hover {
+  background: var(--bg-glass-hover);
+  border-color: rgba(225, 29, 72, 0.3);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: var(--space-xl) 0;
+}
+
+/* ── Page Views ── */
+.page-view {
+  display: none;
+  animation: fadeInPage 0.35s ease;
+}
+.page-view.active {
+  display: block;
+}
+
+/* ── Section Header ── */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+.section-header h2 {
+  font-family: var(--font-bn);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+.section-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blood-red);
+  background: #FFE4E6;
+  border: 1px solid #FDA4AF;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+}
+
+/* ── Noise Texture Overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.15;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .container { padding: 0 var(--space-md); }
+  .section { padding: var(--space-2xl) 0; }
+  .hide-mobile { display: none !important; }
+}
+
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============================================================
+   RENEWAL BLOOD NETWORK — Animations
+   ============================================================ */
+
+/* ── Page Transitions ── */
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Blood Drop Animation ── */
+@keyframes bloodDrop {
+  0%   { transform: translateY(-20px) scale(0.8); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { transform: translateY(0) scale(1); opacity: 1; }
+  85%  { transform: translateY(5px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.15); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.12); }
+  70%       { transform: scale(1); }
+}
+
+/* ── Pulse / Glow ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes glowRed {
+  0%, 100% { box-shadow: 0 0 20px rgba(229,57,53,0.2); }
+  50%       { box-shadow: 0 0 40px rgba(229,57,53,0.5), 0 0 60px rgba(229,57,53,0.2); }
+}
+
+@keyframes glowGreen {
+  0%, 100% { box-shadow: 0 0 10px rgba(0,230,118,0.1); }
+  50%       { box-shadow: 0 0 25px rgba(0,230,118,0.4); }
+}
+
+/* ── Emergency Alert ── */
+@keyframes emergencyPulse {
+  0%, 100% {
+    border-color: rgba(255,23,68,0.3);
+    box-shadow: 0 0 0 0 rgba(255,23,68,0.4);
+  }
+  50% {
+    border-color: rgba(255,23,68,0.8);
+    box-shadow: 0 0 20px 5px rgba(255,23,68,0.15);
+  }
+}
+
+@keyframes urgentFlash {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── Counter Animation ── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Loading Spinner ── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes loadingDots {
+  0%, 60%, 100% { transform: scale(1); opacity: 0.5; }
+  30%            { transform: scale(1.3); opacity: 1; }
+}
+
+/* ── Toast ── */
+@keyframes toastIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toastOut {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(120%); opacity: 0; }
+}
+
+/* ── Modal ── */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Progress Bar ── */
+@keyframes progressFill {
+  from { width: 0; }
+}
+
+/* ── Float ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* ── Shimmer (Loading Skeleton) ── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Ripple ── */
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* ── Stagger Utility Classes ── */
+.anim-fadeInUp  { animation: slideInUp 0.5s ease both; }
+.anim-fadeIn    { animation: fadeIn 0.4s ease both; }
+.anim-heartbeat { animation: heartbeat 1.4s ease-in-out infinite; }
+.anim-pulse     { animation: pulse 2s ease-in-out infinite; }
+.anim-float     { animation: float 4s ease-in-out infinite; }
+.anim-glowRed   { animation: glowRed 2s ease-in-out infinite; }
+.anim-glowGreen { animation: glowGreen 2s ease-in-out infinite; }
+.anim-spin      { animation: spin 1s linear infinite; }
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* ── Hover Transforms ── */
+.hover-lift {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-scale {
+  transition: transform var(--transition-fast);
+}
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* ── Skeleton Loader ── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #F1F5F9 25%,
+    #E2E8F0 50%,
+    #F1F5F9 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   RENEWAL BLOOD NETWORK — Reusable Components
+   ============================================================ */
+
+/* ══════════════════════════════
+   NAVBAR
+══════════════════════════════ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all var(--transition-normal);
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom-color: var(--border);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.navbar-brand .brand-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--grad-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  animation: heartbeat 1.4s ease-in-out infinite;
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.35);
+  color: white;
+}
+
+.navbar-brand .brand-name {
+  font-family: var(--font-bn);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.navbar-brand .brand-tagline {
+  font-size: 0.65rem;
+  color: var(--blood-red);
+  font-family: var(--font-bn);
+  line-height: 1;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  list-style: none;
+}
+
+.navbar-nav a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  font-family: var(--font-bn);
+  white-space: nowrap;
+}
+
+.navbar-nav a:hover,
+.navbar-nav a.active {
+  color: var(--blood-red);
+  background: #FFE4E6;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.nav-emergency-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #DC2626, #BE123C);
+  color: white !important;
+  padding: 0.4rem 1rem !important;
+  border-radius: var(--radius-full) !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.3);
+}
+
+.nav-emergency-btn:hover {
+  transform: scale(1.03);
+  background: linear-gradient(135deg, #E11D48, #9F1239) !important;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all var(--transition-fast);
+}
+
+/* ══════════════════════════════
+   BUTTONS — Production Refined
+══════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-bn);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 200ms cubic-bezier(0.4,0,0.2,1);
+  text-decoration: none;
+  white-space: nowrap;        /* NEVER wrap button text */
+  flex-shrink: 0;             /* NEVER shrink in flex containers */
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.015em;
+  line-height: 1.25;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  vertical-align: middle;
+}
+
+/* Icon inside buttons — always crisp and non-wrapping */
+.btn i,
+.btn svg {
+  font-size: 0.8125rem;  /* 13px — consistent icon size */
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 150ms ease;
+}
+.btn:hover::after  { background: rgba(255,255,255,0.12); }
+.btn:active        { transform: scale(0.97); }
+.btn:focus-visible { outline: 2px solid var(--blood-red); outline-offset: 2px; }
+
+.btn-primary {
+  background: var(--grad-red);
+  color: white;
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.25);
+}
+.btn-primary:hover {
+  box-shadow: 0 4px 18px rgba(225, 29, 72, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-emergency {
+  background: linear-gradient(135deg, #DC2626, #BE123C);
+  color: white;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+  animation: glowRed 2s ease-in-out infinite;
+}
+.btn-emergency:hover {
+  box-shadow: 0 6px 22px rgba(220, 38, 38, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--blood-red);
+  border: 1.5px solid var(--blood-red);
+}
+.btn-outline:hover {
+  background: #FFE4E6;
+  border-color: var(--blood-dark);
+  color: var(--blood-dark);
+}
+
+.btn-ghost {
+  background: #F1F5F9;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover {
+  background: #E2E8F0;
+  color: var(--text-primary);
+  border-color: #CBD5E1;
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #059669, #047857);
+  color: white;
+  box-shadow: 0 2px 10px rgba(5, 150, 105, 0.25);
+}
+.btn-green:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(5, 150, 105, 0.4); }
+
+/* Sizes — consistent proportional scale */
+.btn-sm  { padding: 0.4rem 0.9rem;  font-size: 0.8rem;  gap: 0.35rem; }
+.btn-lg  { padding: 0.75rem 1.75rem; font-size: 0.95rem; gap: 0.5rem; }
+.btn-xl  { padding: 0.9rem 2.25rem;  font-size: 1.05rem; gap: 0.55rem; }
+.btn-full { width: 100%; }
+
+/* Icon-only button */
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  gap: 0;
+}
+.btn-icon-sm { width: 30px; height: 30px; font-size: 0.78rem; }
+
+/* Disabled state */
+.btn:disabled, .btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+/* Loading state */
+.btn.loading { pointer-events: none; }
+.btn.loading::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════
+   BLOOD GROUP BADGE
+══════════════════════════════ */
+.bg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  background: #FFE4E6;
+  border: 1px solid #FDA4AF;
+  color: #BE123C;
+}
+.bg-badge.large {
+  font-size: 1.1rem;
+  padding: 0.4rem 1rem;
+}
+
+/* ══════════════════════════════
+   STATUS BADGES
+══════════════════════════════ */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--font-bn);
+}
+
+.status-pending  { background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A; }
+.status-review   { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+.status-verified { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+.status-rejected { background: #F1F5F9; color: #64748B; border: 1px solid #E2E8F0; }
+.status-completed{ background: #F0FDFA; color: #0F766E; border: 1px solid #99F6E4; }
+.status-expired  { background: #F8FAFC; color: #94A3B8; border: 1px solid #E2E8F0; }
+
+/* ══════════════════════════════
+   AVAILABILITY DOT
+══════════════════════════════ */
+.avail-dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-family: var(--font-bn);
+  font-weight: 500;
+}
+
+.avail-dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-green::before { background: var(--verified-green); }
+.dot-amber::before { background: var(--pending-amber); }
+.dot-red::before   { background: var(--blood-red); }
+
+.avail-yes  { color: var(--verified-green); font-weight: 600; }
+.avail-soon { color: var(--pending-amber); font-weight: 600; }
+.avail-no   { color: var(--text-muted); }
+
+/* ══════════════════════════════
+   VERIFICATION LEVEL BADGES
+══════════════════════════════ */
+.verify-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.verify-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.verify-chip.done  { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+.verify-chip.pending{ background: #F1F5F9; color: #64748B; border: 1px solid #E2E8F0; }
+
+/* ══════════════════════════════
+   TRUST SCORE
+══════════════════════════════ */
+.trust-score {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trust-score-circle {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.trust-score-circle svg {
+  transform: rotate(-90deg);
+}
+
+.trust-score-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--verified-green);
+}
+
+.trust-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.trust-bar-track {
+  width: 80px;
+  height: 6px;
+  background: var(--bg-card);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.trust-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, #00C853, #00E676);
+  transition: width 1s ease;
+}
+.trust-bar-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.trust-score-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--verified-green);
+}
+
+/* ══════════════════════════════
+   DONOR CARD
+══════════════════════════════ */
+.donor-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.donor-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-normal);
+}
+
+.donor-card:hover {
+  border-color: #FDA4AF;
+  background: var(--bg-card);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.donor-card:hover::before { transform: scaleX(1); }
+
+.donor-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.donor-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--grad-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-bn);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.3);
+}
+
+.donor-name {
+  font-family: var(--font-bn);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.donor-location {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.donor-card-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: var(--space-sm) 0;
+}
+
+.donor-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.donor-meta-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-en);
+}
+
+.donor-meta-value {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-family: var(--font-bn);
+  font-weight: 500;
+}
+
+.donor-card-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+/* ══════════════════════════════
+   EMERGENCY CARD
+══════════════════════════════ */
+.emergency-card {
+  background: #FFF5F5;
+  border: 1.5px solid #FECDD3;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+  animation: emergencyPulse 3s ease-in-out infinite;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.emergency-card:hover {
+  border-color: #FB7185;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.emergency-card .e-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.emergency-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #FFE4E6;
+  border: 1px solid #FDA4AF;
+  color: #BE123C;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.emergency-badge .pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: #DC2626;
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.emergency-card .e-title {
+  font-family: var(--font-bn);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.emergency-card .e-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.emergency-card .e-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-family: var(--font-bn);
+}
+
+.emergency-card .e-detail .icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.emergency-card .e-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* ══════════════════════════════
+   FORMS
+══════════════════════════════ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: var(--space-md);
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-bn);
+}
+
+.form-label .required {
+  color: var(--blood-red);
+  margin-left: 0.2rem;
+}
+
+.form-label .optional {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 0.78rem;
+  margin-left: 0.3rem;
+}
+
+.form-control {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 0.7rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: var(--font-bn);
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: var(--blood-red);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12);
+  background: #FFFFFF;
+}
+
+.form-control::placeholder { color: var(--text-muted); }
+
+select.form-control {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  padding-right: 2.5rem;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-bn);
+}
+
+.form-error {
+  font-size: 0.75rem;
+  color: var(--blood-red);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.form-control.error { border-color: var(--blood-red); }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* Checkbox / Radio */
+.check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+.check-item:hover { background: #F1F5F9; }
+
+.check-item input[type="checkbox"],
+.check-item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--blood-red);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.check-item label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-family: var(--font-bn);
+  cursor: pointer;
+}
+
+/* File Upload */
+.file-upload-area {
+  border: 2px dashed #CBD5E1;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  background: #F8FAFC;
+}
+
+.file-upload-area:hover,
+.file-upload-area.dragover {
+  border-color: var(--blood-red);
+  background: #FFF1F2;
+}
+
+.file-upload-area .upload-icon { font-size: 2rem; margin-bottom: var(--space-sm); color: var(--blood-red); }
+.file-upload-area p { font-family: var(--font-bn); font-size: 0.9rem; color: var(--text-secondary); }
+
+/* ══════════════════════════════
+   STEP WIZARD
+══════════════════════════════ */
+.wizard-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: var(--space-2xl);
+  position: relative;
+}
+
+.wizard-steps::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.wizard-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.wizard-step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.wizard-step.active .wizard-step-num {
+  border-color: var(--blood-red);
+  background: var(--blood-red);
+  color: white;
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.35);
+}
+
+.wizard-step.done .wizard-step-num {
+  border-color: var(--verified-green);
+  background: var(--verified-green);
+  color: white;
+}
+
+.wizard-step-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-bn);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.wizard-step.active .wizard-step-label { color: var(--blood-red); font-weight: 600; }
+.wizard-step.done .wizard-step-label  { color: var(--verified-green); font-weight: 600; }
+
+.wizard-pane { display: none; }
+.wizard-pane.active { display: block; animation: fadeIn 0.3s ease; }
+
+/* ══════════════════════════════
+   MODAL
+══════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.hidden { display: none; }
+
+.modal-box {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalIn 0.3s ease;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #F1F5F9;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+.modal-close:hover {
+  background: #FFE4E6;
+  color: var(--blood-red);
+  border-color: #FDA4AF;
+}
+
+.modal-title {
+  font-family: var(--font-bn);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+/* ══════════════════════════════
+   OTP INPUT
+══════════════════════════════ */
+.otp-container {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin: var(--space-lg) 0;
+}
+
+.otp-input {
+  width: 52px;
+  height: 56px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  background: #FFFFFF;
+  border: 2px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+.otp-input:focus {
+  border-color: var(--blood-red);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12);
+}
+.otp-input.filled { border-color: var(--verified-green); background: #ECFDF5; color: #047857; }
+
+/* ══════════════════════════════
+   TOAST NOTIFICATIONS
+══════════════════════════════ */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-xl);
+  right: var(--space-xl);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: toastIn 0.3s ease;
+  max-width: 380px;
+  min-width: 300px;
+}
+
+.toast.removing { animation: toastOut 0.3s ease forwards; }
+
+.toast-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.toast-content { flex: 1; }
+.toast-title { font-weight: 700; font-size: 0.9rem; font-family: var(--font-bn); color: var(--text-primary); }
+.toast-msg   { font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-bn); }
+
+.toast.success { border-color: #A7F3D0; }
+.toast.error   { border-color: #FECDD3; }
+.toast.info    { border-color: #BFDBFE; }
+.toast.warning { border-color: #FDE68A; }
+.toast.emergency { border-color: #FDA4AF; animation: emergencyPulse 2s ease-in-out infinite; }
+
+/* ══════════════════════════════
+   TABLE
+══════════════════════════════ */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-card);
+  background: #FFFFFF;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  padding: 0.75rem 1rem;
+  background: #F8FAFC;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-en);
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 0.85rem 1rem;
+  color: var(--text-secondary);
+  font-family: var(--font-bn);
+  border-bottom: 1px solid #F1F5F9;
+  transition: background var(--transition-fast);
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #F8FAFC; }
+
+/* ══════════════════════════════
+   STAT CARD
+══════════════════════════════ */
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: #FDA4AF;
+}
+
+.stat-card .stat-icon {
+  font-size: 1.8rem;
+  margin-bottom: var(--space-sm);
+  display: block;
+}
+
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family: var(--font-bn);
+  margin-top: 0.3rem;
+}
+
+.stat-card .stat-change {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.stat-card .stat-change.up   { background: var(--verified-dim); color: var(--verified-green); }
+.stat-card .stat-change.down { background: #FFE4E6; color: var(--blood-red); }
+
+/* ══════════════════════════════
+   PAGE HEADER
+══════════════════════════════ */
+.page-header {
+  padding: calc(64px + var(--space-2xl)) 0 var(--space-2xl);
+  background: var(--grad-hero);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.page-header h1 {
+  font-family: var(--font-bn);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.page-header p {
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: var(--font-bn);
+  color: var(--text-secondary);
+}
+
+/* ══════════════════════════════
+   BADGE DISPLAY
+══════════════════════════════ */
+.donor-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-bn);
+}
+
+.badge-registered { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+.badge-bronze     { background: #FFF7ED; color: #C2410C; border: 1px solid #FFEDD5; }
+.badge-silver     { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+.badge-gold       { background: #FEFCE8; color: #A16207; border: 1px solid #FEF08A; }
+.badge-lifesaver  { background: #F0F9FF; color: #0284C7; border: 1px solid #BAE6FD; }
+.badge-verified   { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+
+/* ══════════════════════════════
+   SEARCH / FILTER BAR
+══════════════════════════════ */
+.filter-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg) var(--space-xl);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-md);
+  align-items: end;
+}
+
+/* ══════════════════════════════
+   TABS
+══════════════════════════════ */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: #F1F5F9;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0.3rem;
+  margin-bottom: var(--space-xl);
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-bn);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-btn:hover  { color: var(--text-primary); background: #E2E8F0; }
+.tab-btn.active {
+  color: var(--text-primary);
+  background: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+  font-weight: 700;
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: fadeIn 0.25s ease; }
+
+/* ══════════════════════════════
+   BLOOD GROUP STAT BAR
+══════════════════════════════ */
+.bg-stat-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.bg-stat-label {
+  width: 36px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--blood-red);
+  flex-shrink: 0;
+}
+
+.bg-stat-bar {
+  flex: 1;
+  height: 8px;
+  background: #F1F5F9;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.bg-stat-fill {
+  height: 100%;
+  background: var(--grad-red);
+  border-radius: var(--radius-full);
+  transition: width 1s ease;
+}
+
+.bg-stat-count {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  width: 80px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════
+   EMPTY STATE
+══════════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl);
+  color: var(--text-muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+  opacity: 0.5;
+  color: var(--blood-red);
+}
+
+.empty-state p {
+  font-family: var(--font-bn);
+  font-size: 1rem;
+}
+
+/* ══════════════════════════════
+   LOADING SPINNER
+══════════════════════════════ */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--blood-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+/* ══════════════════════════════
+   SECTION DECORATORS
+══════════════════════════════ */
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(225,29,72,0.3), transparent);
+  margin: 0;
+}
+
+/* ══════════════════════════════
+   MOBILE NAV MENU
+══════════════════════════════ */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.96);
+  z-index: calc(var(--z-sticky) - 1);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  backdrop-filter: blur(20px);
+}
+
+.mobile-menu.open { display: flex; animation: fadeIn 0.2s ease; }
+
+.mobile-menu a {
+  font-family: var(--font-bn);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+}
+.mobile-menu a:hover { color: var(--blood-red); }
+
+/* ══════════════════════════════
+   FA ICON SIZING IN CONTEXT
+══════════════════════════════ */
+.hiw-icon i,
+.cta-icon i {
+  font-size: inherit;
+  line-height: 1;
+}
+
+/* ══════════════════════════════
+   OTP PAGE ELEMENTS
+══════════════════════════════ */
+.otp-page-icon {
+  width: 72px;
+  height: 72px;
+  background: #FFE4E6;
+  border: 1px solid #FDA4AF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  color: var(--blood-red);
+  margin: 0 auto var(--space-lg);
+}
+
+.otp-demo-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  background: #FFF1F2;
+  border: 1px solid #FFE4E6;
+  border-radius: var(--radius-md);
+  padding: 0.65rem 1rem;
+  margin: var(--space-md) 0;
+  font-size: 0.82rem;
+  color: #9F1239;
+  font-family: var(--font-bn);
+}
+
+.otp-demo-notice i {
+  color: var(--blood-red);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════
+   REGISTRATION SUCCESS ICON
+══════════════════════════════ */
+.reg-success-icon {
+  width: 80px;
+  height: 80px;
+  background: #ECFDF5;
+  border: 2px solid #A7F3D0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--verified-green);
+  margin: 0 auto var(--space-lg);
+}
+
+/* ══════════════════════════════
+   SECTION-TAG ICON ALIGNMENT
+══════════════════════════════ */
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.section-tag i { font-size: 0.75em; }
+
+/* ══════════════════════════════
+   NAVBAR ICON ALIGNMENT
+══════════════════════════════ */
+.navbar-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.navbar-nav a i {
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  width: 12px;
+  text-align: center;
+}
+
+.nav-emergency-btn i { font-size: 0.78rem; }
+
+/* Mobile menu icon alignment */
+.mobile-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.mobile-menu a i {
+  width: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  color: var(--blood-red);
+}
+
+/* ══════════════════════════════
+   CHECK-ITEM ICON ALIGNMENT
+══════════════════════════════ */
+.check-item label i {
+  font-size: 0.85em;
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+
+/* ══════════════════════════════
+   TEXT WRAPPING FIXES
+══════════════════════════════ */
+/* Bengali text in headings should break at word boundaries */
+h1, h2, h3, h4 {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+/* Badges, chips — never wrap */
+.status-badge, .donor-badge, .emergency-badge,
+.verify-chip, .admin-role-badge, .bg-badge {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Card actions — allow wrapping at the row level, not within individual buttons */
+.donor-card-actions {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Emergency card footer */
+.e-footer {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* CTA card — proper responsive text */
+.cta-card {
+  cursor: pointer;
+}
+.cta-sub {
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+/* Upload icon sizing */
+.upload-icon i {
+  font-size: 2rem;
+  color: var(--text-muted);
+}
+
+/* ══════════════════════════════
+   COMPONENT MOBILE OVERRIDES
+══════════════════════════════ */
+@media (max-width: 600px) {
+  /* Mobile menu links slightly smaller */
+  .mobile-menu a { font-size: 1.25rem; }
+
+  /* Donor card compact */
+  .donor-card-header { flex-wrap: wrap; gap: 0.6rem; }
+  .donor-avatar { width: 38px; height: 38px; font-size: 1rem; }
+  .donor-name { font-size: 0.9rem; }
+  .donor-location { font-size: 0.72rem; }
+  .verify-chips { gap: 0.25rem; }
+  .verify-chip { font-size: 0.65rem; padding: 0.15rem 0.45rem; }
+  .donor-badge { font-size: 0.68rem; padding: 0.2rem 0.55rem; }
+  .donor-card-actions { gap: 0.4rem; }
+  .donor-card-actions .btn { font-size: 0.78rem; padding: 0.45rem 0.75rem; }
+
+  /* Emergency card compact */
+  .emergency-badge { font-size: 0.65rem; }
+  .e-footer { gap: 0.4rem; }
+  .e-footer .btn { font-size: 0.78rem; padding: 0.4rem 0.7rem; }
+
+  /* Status badges smaller */
+  .status-badge { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+  .bg-badge { font-size: 0.78rem; padding: 0.25rem 0.55rem; }
+  .bg-badge.large { font-size: 0.95rem; padding: 0.3rem 0.75rem; }
+
+  /* Stat cards compact */
+  .stat-card .stat-icon { font-size: 1.3rem; }
+  .stat-card .stat-value { font-size: 1.4rem; }
+  .stat-card .stat-label { font-size: 0.75rem; }
+
+  /* Filter bar compact */
+  .filter-bar { margin: 0 calc(-1 * var(--space-md)); border-radius: 0; border-left: none; border-right: none; }
+
+  /* Form control padding reduce */
+  .form-control { padding: 0.6rem 0.85rem; font-size: 0.88rem; }
+  .form-label { font-size: 0.8rem; }
+  .form-hint { font-size: 0.7rem; }
+  .form-group { margin-bottom: var(--space-sm); }
+
+  /* Check items smaller */
+  .check-item label { font-size: 0.85rem; }
+
+  /* Leaderboard compact */
+  .top-donor-card { padding: var(--space-lg) var(--space-md); }
+  .top-rank-icon { font-size: 2rem; }
+  .top-donor-name { font-size: 0.9rem; }
+  .top-donor-count { font-size: 0.78rem; }
+
+  /* Blood group stat bars */
+  .bg-stat-count { width: 55px; font-size: 0.72rem; }
+  .bg-stat-label { width: 30px; font-size: 0.72rem; }
+
+  /* Admin table - hide less important columns */
+  table th:nth-child(5),
+  table td:nth-child(5) { display: none; } /* hide Trust Score column on mobile */
+
+  /* Tabs horizontal scroll */
+  .tabs { border-radius: var(--radius-md); }
+
+  /* Toast compact */
+  .toast { padding: var(--space-sm) var(--space-md); }
+  .toast-title { font-size: 0.82rem; }
+  .toast-msg { font-size: 0.72rem; }
+  .toast-icon { font-size: 1rem; }
+
+  /* Modal bottom-sheet style */
+  .modal-title { font-size: 1.1rem; }
+
+  /* Wizard steps compact */
+  .wizard-steps::before { left: 15%; right: 15%; }
+}
+/* Navbar mobile breakpoint */
+@media (max-width: 900px) {
+  .navbar-nav { display: none; }
+  .hamburger  { display: flex; }
+}
+
+/* ============================================================
+   RENEWAL ADMIN — Compact Dashboard Layout
+   ============================================================ */
+
+/* Reset & Base Variables */
+:root {
+  --sidebar-width: 260px;
+  --header-height: 60px;
+  --admin-bg: #f4f6f8;
+  --admin-surface: #ffffff;
+  --admin-border: #e2e8f0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent full page scroll */
+  background: var(--admin-bg);
+  font-family: var(--font-en), var(--font-bn), sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Topbar (Mobile Only) ── */
+.admin-topbar {
+  display: none;
+  height: var(--header-height);
+  background: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  align-items: center;
+  padding: 0 1rem;
+  justify-content: space-between;
+  z-index: 100;
+}
+.admin-hamburger {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* ── Layout Container ── */
+.admin-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - var(--header-height));
+}
+
+/* ── Sidebar ── */
+.admin-sidebar {
+  width: var(--sidebar-width);
+  background: var(--admin-surface);
+  border-right: 1px solid var(--admin-border);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  z-index: 90;
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--admin-border);
+  text-align: center;
+}
+.sidebar-header .brand-icon {
+  font-size: 2rem;
+  color: var(--blood-red);
+  margin-bottom: 0.5rem;
+}
+.sidebar-header h2 {
+  margin: 0;
+  font-family: var(--font-bn);
+  font-size: 1.2rem;
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-family: var(--font-bn);
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+}
+.sidebar-link i {
+  width: 24px;
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+}
+.sidebar-link:hover, .sidebar-link.active {
+  background: rgba(225, 29, 72, 0.05);
+  color: var(--blood-red);
+  border-left-color: var(--blood-red);
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--admin-border);
+}
+
+/* ── Main Content Area ── */
+.admin-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: var(--admin-bg);
+}
+
+/* ── Compact Stats Grid ── */
+.compact-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.compact-stat-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.compact-stat-icon {
+  font-size: 1.8rem;
+}
+.compact-stat-info h4 {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family: var(--font-bn);
+}
+.compact-stat-info .val {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── Compact Section ── */
+.admin-section {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  margin-bottom: 1.5rem;
+}
+.admin-section-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--admin-border);
+  font-family: var(--font-bn);
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.admin-section-content {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+/* ── Compact Data Lists ── */
+.data-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+.data-item:hover {
+  border-color: rgba(225, 29, 72, 0.3);
+  background: rgba(225, 29, 72, 0.02);
+}
+.data-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+}
+.data-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.data-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.data-actions button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+/* ── Tab Panes ── */
+.admin-tab-pane {
+  display: none;
+  animation: fadeUp 0.3s ease-out;
+}
+.admin-tab-pane.active {
+  display: block;
+}
+
+/* ── Mobile Responsive ── */
+@media (max-width: 768px) {
+  body {
+    height: 100vh;
+  }
+  .admin-topbar {
+    display: flex;
+  }
+  .admin-layout {
+    height: calc(100vh - var(--header-height));
+  }
+  .admin-sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  .compact-stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .data-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .data-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .data-actions button {
+    flex: 1;
+  }
+}
+
+
+/* Extra responsive rules for compact phones <= 480px and <= 360px */
+@media (max-width: 480px) {
+  .admin-main {
+    padding: 0.75rem !important;
+  }
+  .admin-topbar {
+    padding: 0 0.75rem;
+  }
+  .compact-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .compact-stat-card {
+    padding: 0.75rem 0.5rem;
+  }
+  .stat-val {
+    font-size: 1.35rem;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+  }
+  .data-actions {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .data-actions button {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.6rem;
+  }
+  .admin-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 360px) {
+  .compact-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+[hidden]{display:none!important}
+.login-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg-dark);display:flex;align-items:center;justify-content:center;padding:1rem;overflow:auto}
+.login-card{background:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:100%;max-width:350px;border:1px solid var(--border);animation:pop .3s cubic-bezier(.2,.9,.3,1.2)}
+.login-ico{text-align:center;color:var(--blood-red);font-size:2.5rem;margin-bottom:1rem}
+.login-card h3{text-align:center;margin-bottom:.4rem}
+.login-card p.sub{text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:1.25rem}
+.login-pwd{text-align:center;letter-spacing:.2rem;font-size:1.2rem;padding:.8rem}
+#cap-admin{display:flex;justify-content:center;margin:1rem 0 .75rem;min-height:20px}
+#title-ico{color:var(--blood-red)}
+.topbar-brand{font-family:var(--font-bn);font-weight:700;color:var(--blood-red)}
+.sidebar-header .muted,.muted{color:var(--text-muted);font-size:.85rem;font-family:var(--font-bn)}
+button.sidebar-link{width:100%;background:none;border:0;border-left:4px solid transparent;font-size:1rem;text-align:left}
+#who{padding:0 1.5rem .5rem;color:var(--text-muted);font-size:.85rem;font-family:var(--font-bn)}
+.sidebar-footer .sidebar-link{color:var(--blood-red)}
+.admin-section-content{overflow:visible}
+.filter-row{display:flex;flex-wrap:wrap;gap:.6rem .9rem;align-items:flex-end;margin-bottom:1rem}
+.filter-row .form-group{margin:0;min-width:150px}
+.pager{display:flex;gap:.5rem;margin-top:1rem}
+.data-info{min-width:0}
+.data-info h4{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem}
+.data-info pre{background:#F1F5F9;border-radius:var(--radius-sm);padding:.5rem;overflow-x:auto;font-size:.78rem;margin-top:.4rem}
+.data-actions{flex-wrap:wrap;align-items:center;justify-content:flex-end}
+.data-actions .form-control{min-width:150px;width:auto;padding:.4rem .6rem}
+.chk{display:inline-flex;align-items:center;gap:.35rem;font-size:.85rem;color:var(--text-secondary);cursor:pointer;font-family:var(--font-bn)}
+.chk input{width:16px;height:16px;accent-color:var(--blood-red)}
+.btn.danger{color:var(--blood-red);border-color:#FDA4AF}
+.btn-ghost.loading::before{border-color:rgba(0,0,0,.15);border-top-color:var(--blood-red)}
+.row-sk{height:76px;margin-bottom:.5rem;border-radius:var(--radius-sm)}
+.msg{padding:.6rem .8rem;border-radius:var(--radius-md);font-size:.9rem;margin:.6rem 0;animation:fadeIn .2s}
+.err{background:#FFE4E6;color:var(--blood-dark)}
+#progress{position:fixed;inset:0 0 auto;height:3px;z-index:10000;pointer-events:none;opacity:0;transition:opacity .2s;background:linear-gradient(90deg,transparent,var(--blood-red),transparent) no-repeat;background-size:40% 100%;animation:slide 1s linear infinite}
+#progress.on{opacity:1}
+dialog{border:1px solid var(--border);border-radius:var(--radius-xl);padding:0;width:min(420px,calc(100% - 2rem));background:#fff;color:var(--text-primary);box-shadow:var(--shadow-lg)}
+dialog[open]{animation:pop .24s cubic-bezier(.2,.9,.3,1.2)}dialog.closing{animation:out .16s ease forwards}
+dialog::backdrop{background:var(--bg-overlay);backdrop-filter:blur(6px);animation:fadeIn .2s}
+.dlg-in{padding:var(--space-lg)}.dlg-in h3{margin-bottom:.4rem;font-size:1.2rem}.dlg-in p{margin-bottom:1rem}
+.dlg-act{display:flex;gap:.5rem;justify-content:flex-end}
+.toast.removing{animation:toastOut .3s ease forwards}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.96)}}
+@keyframes out{to{opacity:0;transform:translateY(8px) scale(.97)}}
+@keyframes slide{from{background-position:-40% 0}to{background-position:140% 0}}
+:root{--header-height:calc(60px + env(safe-area-inset-top,0px))}
+html{height:100%;overflow:hidden}
+body{position:fixed;inset:0;width:100%;height:auto}
+.admin-layout{height:auto!important;flex:1;min-height:0}
+.admin-topbar{flex:none;height:var(--header-height);padding-top:env(safe-area-inset-top,0px);padding-left:max(1rem,env(safe-area-inset-left));padding-right:max(1rem,env(safe-area-inset-right))}
+.sidebar-footer{padding-bottom:calc(1rem + env(safe-area-inset-bottom,0px))}
+.sb-backdrop{display:none}
+.admin-hamburger{width:44px;height:44px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;border-radius:12px;border:1px solid var(--admin-border);background:#fff;cursor:pointer}
+.admin-hamburger span{display:block;width:20px;height:2px;border-radius:2px;background:var(--text-primary);transition:transform .25s,opacity .2s}
+.admin-hamburger.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.admin-hamburger.is-open span:nth-child(2){opacity:0}
+.admin-hamburger.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(max-width:768px){
+.admin-topbar{display:flex!important}
+.admin-topbar{position:relative;z-index:100}
+.sb-backdrop{display:block;position:fixed;inset:var(--header-height) 0 0 0;background:rgba(15,23,42,.45);backdrop-filter:blur(4px);z-index:80;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.sb-backdrop.open{opacity:1;visibility:visible}
+.admin-sidebar{width:82%;max-width:300px;z-index:90}
+.sidebar-header{padding:1rem}
+}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
 </head>
 <body>
-
-<!-- Mobile Topbar -->
-<div class="admin-topbar">
-  <div style="font-family:var(--font-bn);font-weight:700;color:var(--blood-red)">RENEWAL ADMIN</div>
-  <button class="admin-hamburger" onclick="AdminModule.toggleSidebar()">
-    <i class="fas fa-bars"></i>
-  </button>
-</div>
-
-<!-- Secure Login Overlay -->
-<div id="admin-login-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg-default);z-index:9999;display:flex;align-items:center;justify-content:center">
-  <div style="background:var(--bg-surface);padding:2rem;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(0,0,0,0.1);width:100%;max-width:350px;border:1px solid var(--border)">
-    <div style="text-align:center;color:var(--blood-red);font-size:2.5rem;margin-bottom:1rem">
-      <i class="fas fa-user-shield"></i>
-    </div>
-    <h3 style="font-family:var(--font-bn);text-align:center;margin-bottom:0.5rem">অ্যাডমিন প্যানেল</h3>
-    <p style="font-family:var(--font-bn);text-align:center;color:var(--text-secondary);margin-bottom:1.5rem;font-size:0.9rem">
-      সিস্টেমে প্রবেশ করতে পাসওয়ার্ড দিন
-    </p>
-    <div class="form-group">
-      <input type="password" class="form-control" id="admin-login-pwd" placeholder="••••••••" style="text-align:center;letter-spacing:0.2rem;font-size:1.2rem;padding:0.8rem" />
-    </div>
-
-    <!-- Cloudflare Turnstile for Admin Login -->
-    <div class="turnstile-container-wrapper" style="display:flex;flex-direction:column;align-items:center;justify-content:center;margin:1rem auto 0.75rem;min-height:68px;">
-      <div id="admin-turnstile-container"></div>
-      <div id="admin-turnstile-error" style="display:none;color:var(--blood-red);font-size:0.82rem;margin-top:0.35rem;font-family:var(--font-bn);font-weight:600;">
-        <i class="fas fa-circle-exclamation"></i> অনুগ্রহ করে ক্যাপচা (Turnstile) যাচাই সম্পন্ন করুন
-      </div>
-    </div>
-
-    <button class="btn btn-primary btn-full" onclick="AdminAuth.login()" id="admin-login-btn">
-      <i class="fas fa-lock-open"></i> প্রবেশ করুন
-    </button>
+  <div id="progress"></div>
+  <div class="admin-topbar">
+    <div class="topbar-brand" id="top-brand">RENEWAL ADMIN</div>
+    <button type="button" class="admin-hamburger" id="menu-btn" aria-label="মেনু খুলুন" aria-controls="sidebar" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
-</div>
 
-<!-- Main Layout Container (Hidden until logged in) -->
-<div class="admin-layout" id="admin-main-layout" style="display:none">
-  
-  <!-- Sidebar Navigation -->
-  <aside class="admin-sidebar" id="admin-sidebar">
-    <div class="sidebar-header">
-      <div class="brand-icon"><i class="fas fa-shield-halved"></i></div>
-      <h2>RENEWAL ADMIN</h2>
-      <div style="font-size:0.8rem;color:var(--text-muted);font-family:var(--font-bn)">কন্ট্রোল প্যানেল</div>
+  <div class="sb-backdrop" id="sb-backdrop"></div>
+
+  <!-- লগইন -->
+  <section id="login-view" class="login-overlay" hidden>
+    <div class="login-card">
+      <div class="login-ico"><i class="fas fa-user-shield"></i></div>
+      <h3>অ্যাডমিন প্যানেল</h3>
+      <p class="sub">সিস্টেমে প্রবেশ করতে ইউজারনেম ও পাসওয়ার্ড দিন</p>
+      <form id="login-form">
+        <div class="form-group"><input id="a-user" class="form-control" type="text" autocomplete="username" maxlength="64" placeholder="ইউজারনেম / ইমেইল" required></div>
+        <div class="form-group"><input id="a-pass" class="form-control login-pwd" type="password" autocomplete="current-password" placeholder="••••••••" required></div>
+        <div id="cap-admin"></div>
+        <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-lock-open"></i> প্রবেশ করুন</button>
+      </form>
+      <div id="login-msg"></div>
     </div>
+  </section>
 
-    <nav class="sidebar-nav">
-      <a class="sidebar-link active" data-tab="verif" onclick="AdminModule.switchTab('verif')"><i class="fas fa-hourglass-half"></i> যাচাই বাকি</a>
-      <a class="sidebar-link" data-tab="emergency" onclick="AdminModule.switchTab('emergency')"><i class="fas fa-triangle-exclamation"></i> জরুরি অনুরোধ</a>
-      <a class="sidebar-link" data-tab="contact" onclick="AdminModule.switchTab('contact')"><i class="fas fa-phone"></i> যোগাযোগ অনুরোধ</a>
-      <a class="sidebar-link" data-tab="blood" onclick="AdminModule.switchTab('blood')"><i class="fas fa-droplet"></i> রক্তের গ্রুপ</a>
-      <a class="sidebar-link" data-tab="donors" onclick="AdminModule.switchTab('donors')"><i class="fas fa-users"></i> সব দাতা</a>
-      <a class="sidebar-link" data-tab="chart" onclick="AdminModule.switchTab('chart')"><i class="fas fa-chart-line"></i> ট্রেন্ড</a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <a class="sidebar-link" style="color:var(--blood-red)" onclick="AdminAuth.logout()"><i class="fas fa-right-from-bracket"></i> লগআউট</a>
+  <!-- পাসওয়ার্ড বদল (প্রথম লগইনে বাধ্যতামূলক) -->
+  <section id="pw-view" class="login-overlay" hidden>
+    <div class="login-card">
+      <div class="login-ico"><i class="fas fa-key"></i></div>
+      <h3>পাসওয়ার্ড বদলান</h3>
+      <p class="sub" id="pw-sub"></p>
+      <form id="pw-form">
+        <div class="form-group"><input id="pw-cur" class="form-control" type="password" autocomplete="current-password" maxlength="256" placeholder="বর্তমান পাসওয়ার্ড" required></div>
+        <div class="form-group"><input id="pw-new" class="form-control" type="password" autocomplete="new-password" minlength="10" maxlength="128" placeholder="নতুন পাসওয়ার্ড" required></div>
+        <div class="form-group"><input id="pw-new2" class="form-control" type="password" autocomplete="new-password" minlength="10" maxlength="128" placeholder="নতুন পাসওয়ার্ড আবার" required></div>
+        <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-floppy-disk"></i> সংরক্ষণ</button>
+        <button type="button" id="pw-cancel" class="btn btn-ghost btn-full" hidden>বাতিল</button>
+        <button type="button" id="pw-logout" class="btn btn-ghost btn-full" hidden>লগআউট</button>
+      </form>
+      <div id="pw-msg"></div>
     </div>
-  </aside>
+  </section>
 
-  <!-- Main Content Area -->
-  <main class="admin-main">
-    
-    <!-- Admin Overview Stats -->
-    <div class="compact-stats-grid" id="admin-stats-grid">
-      <!-- Rendered by JS -->
-    </div>
-
-    <!-- Tab: Pending Verifications -->
-    <div class="admin-tab-pane active" id="atab-verif">
-      <div class="admin-section">
-        <div class="admin-section-header">
-          <i class="fas fa-hourglass-half" style="color:var(--pending-amber)"></i> যাচাই বাকি আছে এমন দাতা
-        </div>
-        <div class="admin-section-content" id="pending-verif-list">
-          <!-- Rendered by JS -->
-        </div>
+  <!-- মূল লেআউট -->
+  <div id="app" class="admin-layout" hidden>
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon"><i class="fas fa-shield-halved"></i></div>
+        <h2>RENEWAL ADMIN</h2>
+        <div class="muted">কন্ট্রোল প্যানেল</div>
       </div>
-    </div>
-
-    <!-- Tab: Emergency Queue -->
-    <div class="admin-tab-pane" id="atab-emergency">
-      <div class="admin-section">
-        <div class="admin-section-header">
-          <i class="fas fa-triangle-exclamation" style="color:var(--blood-red)"></i> জরুরি রক্তের অনুরোধ ব্যবস্থাপনা
-        </div>
-        <div class="admin-section-content" id="admin-emergency-queue">
-          <!-- Rendered by JS -->
-        </div>
+      <nav class="sidebar-nav" id="tabs"></nav>
+      <div class="sidebar-footer">
+        <div id="who"></div>
+        <button id="pw-btn" type="button" class="sidebar-link" hidden><i class="fas fa-key"></i> পাসওয়ার্ড বদলান</button>
+        <button id="logout-btn" type="button" class="sidebar-link" hidden><i class="fas fa-right-from-bracket"></i> লগআউট</button>
       </div>
-    </div>
-
-    <!-- Tab: Contact Requests -->
-    <div class="admin-tab-pane" id="atab-contact">
+    </aside>
+    <main class="admin-main" id="content">
       <div class="admin-section">
-        <div class="admin-section-header">
-          <i class="fas fa-phone" style="color:var(--status-review)"></i> দাতার সাথে যোগাযোগের অনুরোধ
-        </div>
-        <div class="admin-section-content" id="admin-contact-requests">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab: Blood Group Stats -->
-    <div class="admin-tab-pane" id="atab-blood">
-      <div class="admin-section">
-        <div class="admin-section-header">
-          <i class="fas fa-droplet" style="color:var(--blood-red)"></i> রক্তের গ্রুপ পরিসংখ্যান
-        </div>
-        <div class="admin-section-content" id="blood-group-stats">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab: All Donors -->
-    <div class="admin-tab-pane" id="atab-donors">
-      <div class="admin-section">
-        <div class="admin-section-header">
-          <i class="fas fa-users" style="color:var(--text-primary)"></i> সকল রক্তদাতা
-        </div>
-        <div class="admin-section-content" id="admin-all-donors">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab: Chart -->
-    <div class="admin-tab-pane" id="atab-chart">
-      <div class="admin-section">
-        <div class="admin-section-header">
-          <i class="fas fa-chart-line" style="color:var(--blood-red)"></i> নিবন্ধন ট্রেন্ড
-        </div>
+        <div class="admin-section-header"><i id="title-ico" class="fas fa-list"></i><span id="title"></span></div>
         <div class="admin-section-content">
-          <canvas id="donation-trend-chart" style="max-height:300px;width:100%"></canvas>
+          <div id="filters" class="filter-row"></div>
+          <div id="list"></div>
+          <div id="pager" class="pager"></div>
         </div>
       </div>
-    </div>
+    </main>
+  </div>
 
-  </main>
-</div>
+  <dialog id="dlg"><div class="dlg-in"><h3 id="dlg-title"></h3><p class="muted" id="dlg-text"></p><div class="dlg-act" id="dlg-act"></div></div></dialog>
+  <div id="toasts" class="toast-container" aria-live="polite"></div>
 
-<script src="/static/admin/js/data.js"></script>
-<script src="/static/admin/js/app.js"></script>
-<script src="/static/admin/js/admin.js"></script>
-<script>
-  window.addEventListener('pageshow', (e) => {
-    if (e.persisted) window.location.reload();
-  });
-  document.addEventListener('DOMContentLoaded', () => {
-    // Check auth before anything else
-    AdminAuth.checkSession();
-  });
-</script>
+  <script nonce="{{ nonce }}" src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script nonce="{{ nonce }}">
+  (() => {
+    'use strict';
+
+    const $ = id => document.getElementById(id);
+    const PAGE = 50;
+    const BLOOD = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+    const REQ_STATUSES = ['pending', 'verified', 'rejected', 'fulfilled', 'expired'];
+    const REQ_NEXT = { pending: ['verified', 'rejected'], verified: ['fulfilled', 'rejected'] };
+    const CONTACT_STATUSES = ['pending', 'contacted', 'done', 'rejected'];
+    const ANY = [['', 'সব']];
+
+    let config = { turnstileEnabled: false, turnstileSiteKey: '' };
+    let csrf = null;
+    let adminPhone = null;
+    let me = null;          // { username, role }
+    let pwForced = false;   // প্রথম লগইনের বাধ্যতামূলক পাসওয়ার্ড বদল
+    const capToken = {};
+    const capWidget = {};
+    const state = { tab: 'pending', offset: 0 };
+
+    // ───── DOM helpers ─────
+    function el(tag, props = {}, kids = []) {
+      const n = document.createElement(tag);
+      for (const [k, v] of Object.entries(props)) {
+        if (k === 'text') n.textContent = v;
+        else if (k === 'class') n.className = v;
+        else n.setAttribute(k, v);
+      }
+      if (tag === 'button') n.classList.add('btn', (props.type === 'submit' || n.classList.contains('primary')) ? 'btn-primary' : 'btn-ghost');
+      for (const c of kids) n.append(c);
+      return n;
+    }
+    function note(target, text, ok = false) {
+      target.replaceChildren(el('div', { class: 'msg ' + (ok ? 'ok' : 'err'), text }));
+    }
+    function flash(text, ok = true) {
+      const t = el('div', { class: 'toast ' + (ok ? 'success' : 'error') }, [
+        el('i', { class: 'fas toast-icon ' + (ok ? 'fa-circle-check' : 'fa-circle-xmark') }),
+        el('div', { class: 'toast-content' }, [el('div', { class: 'toast-msg', text })]),
+      ]);
+      $('toasts').append(t);
+      setTimeout(() => { t.classList.add('removing'); setTimeout(() => t.remove(), 300); }, 3500);
+    }
+    function input(type = 'text', attrs = {}) {
+      return el('input', { type, autocomplete: 'off', class: type === 'checkbox' ? '' : 'form-control', ...attrs });
+    }
+    function selectEl(options, value = '') {
+      const s = el('select', { class: 'form-control' });
+      for (const [v, t] of options) s.append(el('option', { value: v, text: t }));
+      s.value = value;
+      return s;
+    }
+    function lab(text, control) {
+      return el('div', { class: 'form-group' }, [el('label', { class: 'form-label', text }), control]);
+    }
+    function fmt(iso) {
+      return iso ? new Date(iso).toLocaleString() : '';
+    }
+
+    // ───── মোবাইল সাইডবার ─────
+    function setNav(open) {
+      $('sidebar').classList.toggle('open', open);
+      $('sb-backdrop').classList.toggle('open', open);
+      $('menu-btn').classList.toggle('is-open', open);
+      $('menu-btn').setAttribute('aria-expanded', String(open));
+    }
+
+    // ───── ডায়ালগ ও লোডিং ─────
+    const dlg = $('dlg');
+    function closeDialog() {
+      if (!dlg.open || dlg.classList.contains('closing')) return;
+      dlg.classList.add('closing');
+      setTimeout(() => { dlg.close(); dlg.classList.remove('closing'); }, 160);
+    }
+    dlg.addEventListener('click', e => { if (e.target === dlg) closeDialog(); });
+    function confirmDialog(title, text, label) {
+      return new Promise(resolve => {
+        let done = false;
+        const fin = v => { if (done) return; done = true; closeDialog(); resolve(v); };
+        const ok = el('button', { type: 'button', class: 'primary', text: label });
+        const no = el('button', { type: 'button', text: 'বাতিল' });
+        ok.addEventListener('click', () => fin(true));
+        no.addEventListener('click', () => fin(false));
+        dlg.addEventListener('close', () => fin(false), { once: true });
+        $('dlg-title').textContent = title;
+        $('dlg-text').textContent = text;
+        $('dlg-act').replaceChildren(no, ok);
+        dlg.classList.remove('closing');
+        if (!dlg.open) dlg.showModal();
+      });
+    }
+    let actor = null, pending = 0, barTimer = 0;
+    function busy(d) {
+      pending += d;
+      clearTimeout(barTimer);
+      if (pending > 0) barTimer = setTimeout(() => $('progress').classList.add('on'), 120);
+      else $('progress').classList.remove('on');
+    }
+    document.addEventListener('click', e => { actor = e.target.closest ? e.target.closest('button') : null; }, true);
+    document.addEventListener('submit', e => { actor = e.submitter || e.target.querySelector('button[type=submit]'); }, true);
+
+    // ───── API: CSRF হেডার; csrf_failed হলে রিফ্রেশ ও একবার পুনঃচেষ্টা; 401 হলে লগইন ─────
+    async function api(path, opts = {}, retry = true) {
+      const btn = actor;
+      actor = null;
+      if (btn && btn.classList.contains('btn')) btn.classList.add('loading'); else if (btn) btn.classList.add('loading');
+      busy(1);
+      try { return await rawApi(path, opts, retry); }
+      finally { busy(-1); if (btn) btn.classList.remove('loading'); }
+    }
+    async function rawApi(path, opts = {}, retry = true) {
+      const method = opts.method || 'GET';
+      const headers = {};
+      if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
+      if (method !== 'GET' && csrf) headers['X-CSRF-Token'] = csrf;
+      const res = await fetch(path, {
+        method,
+        headers,
+        credentials: 'same-origin',
+        body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+      });
+      let data = {};
+      try { data = await res.json(); } catch (_) { /* খালি উত্তর */ }
+      if (!res.ok) {
+        const e = data.error || {};
+        if (e.code === 'csrf_failed' && retry && csrf) {
+          await checkSession();
+          return rawApi(path, opts, false);
+        }
+        const err = new Error(e.message || 'সমস্যা হয়েছে');
+        err.code = res.status === 401 ? 'unauthorized' : e.code;
+        if (e.code === 'password_change_required') showPw(true);
+        throw err;
+      }
+      return data;
+    }
+
+    // ───── Turnstile ─────
+    function mountCaptcha(name) {
+      if (!config.turnstileEnabled) return;
+      const tryRender = (n = 0) => {
+        const box = $('cap-' + name);
+        if (box && window.turnstile) {
+          capWidget[name] = window.turnstile.render(box, {
+            sitekey: config.turnstileSiteKey,
+            callback: t => { capToken[name] = t; },
+            'expired-callback': () => { capToken[name] = null; },
+            'error-callback': () => { capToken[name] = null; },
+          });
+        } else if (n < 50) {
+          setTimeout(() => tryRender(n + 1), 200);
+        }
+      };
+      tryRender();
+    }
+    function captchaToken(name) {
+      if (!config.turnstileEnabled) return undefined;
+      const t = capToken[name];
+      if (!t) throw new Error('বট যাচাই সম্পন্ন করুন');
+      capToken[name] = null;
+      if (window.turnstile && capWidget[name] !== undefined) window.turnstile.reset(capWidget[name]);
+      return t;
+    }
+
+    // ───── সেশন ও ভিউ ─────
+    function showLogin(msg) {
+      csrf = null;
+      adminPhone = null;
+      me = null;
+      pwForced = false;
+      $('pw-view').hidden = true;
+      $('pw-btn').hidden = true;
+      setNav(false);
+      $('menu-btn').hidden = true;
+      $('top-brand').textContent = 'RENEWAL ADMIN';
+      $('who').textContent = '';
+      $('logout-btn').hidden = true;
+      $('app').hidden = true;
+      $('login-view').hidden = false;
+      $('login-msg').replaceChildren();
+      if (msg) note($('login-msg'), msg);
+      mountCaptcha('admin');
+    }
+
+    function showApp() {
+      $('login-view').hidden = true;
+      $('menu-btn').hidden = false;
+      $('app').hidden = false;
+      $('logout-btn').hidden = false;
+      $('pw-view').hidden = true;
+      $('pw-btn').hidden = false;
+      $('who').textContent = me ? me.username + (me.role === 'superadmin' ? ' (সুপার অ্যাডমিন)' : '') : 'অ্যাডমিন';
+      renderTabs();
+      renderTab();
+    }
+
+    async function checkSession() {
+      try {
+        const d = await api('/admin/api/me', {}, false);
+        csrf = d.csrfToken;
+        me = { username: d.username, role: d.role };
+        pwForced = !!d.mustChangePassword;
+        return true;
+      } catch (e) {
+        // প্রথমবার লগইন না থাকা স্বাভাবিক — কোনো বার্তা দেখাই না
+        showLogin(e.code === 'unauthorized' ? undefined : e.message);
+        return false;
+      }
+    }
+
+    // ───── পাসওয়ার্ড বদল ─────
+    function showPw(forced) {
+      pwForced = forced;
+      $('login-view').hidden = true;
+      if (forced) { $('app').hidden = true; $('menu-btn').hidden = true; }
+      $('pw-view').hidden = false;
+      $('pw-cancel').hidden = forced;
+      $('pw-logout').hidden = !forced;
+      $('pw-sub').textContent = forced
+        ? 'প্রথম লগইন — চালিয়ে যেতে নতুন পাসওয়ার্ড দিন (কমপক্ষে ১০ অক্ষর)'
+        : 'নতুন পাসওয়ার্ড দিন (কমপক্ষে ১০ অক্ষর)';
+      $('pw-msg').replaceChildren();
+      for (const id of ['pw-cur', 'pw-new', 'pw-new2']) $(id).value = '';
+    }
+
+    async function onPwChange(e) {
+      e.preventDefault();
+      const msg = $('pw-msg');
+      msg.replaceChildren();
+      const cur = $('pw-cur').value, nw = $('pw-new').value, nw2 = $('pw-new2').value;
+      if (nw !== nw2) return note(msg, 'নতুন পাসওয়ার্ড দুটি মেলেনি');
+      if (nw.length < 10) return note(msg, 'নতুন পাসওয়ার্ড কমপক্ষে ১০ অক্ষরের হতে হবে');
+      try {
+        await api('/admin/api/change-password', { method: 'POST', body: { currentPassword: cur, newPassword: nw } });
+        for (const id of ['pw-cur', 'pw-new', 'pw-new2']) $(id).value = '';
+        const wasForced = pwForced;
+        pwForced = false;
+        $('pw-view').hidden = true;
+        flash('পাসওয়ার্ড বদলানো হয়েছে', true);
+        if (wasForced) showApp();
+      } catch (err) {
+        if (err.code === 'unauthorized') showLogin('সেশন শেষ হয়েছে, আবার লগইন করুন');
+        else note(msg, err.message);
+      }
+    }
+
+    // ───── ট্যাব ও ফিল্টার ─────
+    const TABS = {
+      pending: {
+        title: 'যাচাই বাকি', path: '/admin/api/requests', fixed: { status: 'pending' },
+        filters: [], row: renderRequest,
+      },
+      requests: {
+        title: 'জরুরি অনুরোধ', path: '/admin/api/requests', fixed: {},
+        filters: [{ key: 'status', label: 'স্ট্যাটাস', type: 'select', options: ANY.concat(REQ_STATUSES.map(s => [s, s])) }],
+        row: renderRequest,
+      },
+      contacts: {
+        title: 'যোগাযোগ অনুরোধ', path: '/admin/api/contacts', fixed: {},
+        filters: [{ key: 'status', label: 'স্ট্যাটাস', type: 'select', options: ANY.concat(CONTACT_STATUSES.map(s => [s, s])) }],
+        row: renderContact,
+      },
+      reports: {
+        title: 'রিপোর্ট', path: '/admin/api/reports', fixed: {},
+        filters: [{ key: 'target_type', label: 'ধরন', type: 'select', options: [['', 'সব'], ['donor', 'দাতা'], ['request', 'অনুরোধ']] }],
+        row: renderReport,
+      },
+      donors: {
+        title: 'দাতা', path: '/admin/api/donors', fixed: {},
+        filters: [
+          { key: 'suspicious', label: 'সন্দেহজনক', type: 'select', options: [['', 'সব'], ['true', 'শুধু সন্দেহজনক']] },
+          { key: 'district', label: 'জেলা', type: 'text' },
+          { key: 'q', label: 'নাম / ফোন', type: 'text' },
+          { key: 'donor_id', label: 'দাতার আইডি', type: 'text' },
+        ],
+        row: renderDonor,
+      },
+      users: {
+        title: 'ব্যবহারকারী', path: '/admin/api/users', fixed: {},
+        filters: [{ key: 'flagged', label: 'ফ্ল্যাগ', type: 'select', options: [['', 'সব'], ['true', 'শুধু ফ্ল্যাগ করা']] }],
+        row: renderUser,
+      },
+      reveals: {
+        title: 'নম্বর দেখার লগ', path: '/admin/api/reveals', fixed: {},
+        filters: [
+          { key: 'user_id', label: 'ইউজার আইডি', type: 'text' },
+          { key: 'target_id', label: 'লক্ষ্য আইডি', type: 'text' },
+        ],
+        row: renderReveal,
+      },
+      audit: {
+        title: 'Audit log', path: '/admin/api/audit', fixed: {},
+        filters: [], row: renderAudit,
+      },
+      admins: {
+        title: 'অ্যাডমিনস', path: '/admin/api/admins', fixed: {}, superOnly: true,
+        filters: [], row: renderAdmin, toolbar: adminToolbar,
+      },
+    };
+
+    const ICON = { pending: 'fa-hourglass-half', requests: 'fa-triangle-exclamation', contacts: 'fa-phone', reports: 'fa-flag', donors: 'fa-users', users: 'fa-user-gear', reveals: 'fa-eye', audit: 'fa-clipboard-list', admins: 'fa-user-shield' };
+    function renderTabs() {
+      const nav = $('tabs');
+      nav.replaceChildren();
+      for (const [key, def] of Object.entries(TABS)) {
+        if (def.superOnly && (!me || me.role !== 'superadmin')) continue;
+        const b = el('button', { type: 'button', class: 'sidebar-link' + (key === state.tab ? ' active' : ''), 'data-tab': key }, [el('i', { class: 'fas ' + ICON[key] }), def.title]);
+        b.addEventListener('click', () => {
+          state.tab = key;
+          state.offset = 0;
+          setNav(false);
+          renderTabs();
+          renderTab();
+        });
+        nav.append(b);
+      }
+    }
+
+    function renderTab() {
+      const def = TABS[state.tab];
+      $('title').textContent = def.title;
+      $('top-brand').textContent = def.title;
+      $('title-ico').className = 'fas ' + ICON[state.tab];
+      const bar = $('filters');
+      bar.replaceChildren();
+      if (def.filters.length) {
+        for (const f of def.filters) {
+          const ctl = f.type === 'select' ? selectEl(f.options) : input('text', { maxlength: '64' });
+          ctl.dataset.key = f.key;
+          bar.append(lab(f.label, ctl));
+        }
+        const go = el('button', { type: 'button', class: 'primary', text: 'খুঁজুন' });
+        go.addEventListener('click', () => { state.offset = 0; load(); });
+        bar.append(go);
+      }
+      if (def.toolbar) bar.append(...def.toolbar());
+      const refresh = el('button', { type: 'button', text: 'রিফ্রেশ' });
+      refresh.addEventListener('click', () => load());
+      bar.append(refresh);
+      if (state.prefill) {  // অন্য ট্যাব থেকে "দাতা দেখুন" দিয়ে এলে ফিল্টার আগে থেকে বসানো
+        for (const ctl of bar.querySelectorAll('[data-key]')) {
+          if (state.prefill[ctl.dataset.key] !== undefined) ctl.value = state.prefill[ctl.dataset.key];
+        }
+        state.prefill = null;
+      }
+      load();
+    }
+
+    function queryParams() {
+      const def = TABS[state.tab];
+      const p = { limit: String(PAGE), offset: String(state.offset), ...def.fixed };
+      for (const ctl of $('filters').querySelectorAll('[data-key]')) {
+        if (ctl.value) p[ctl.dataset.key] = ctl.value;
+      }
+      return p;
+    }
+
+    async function load() {
+      const def = TABS[state.tab];
+      const list = $('list');
+      list.replaceChildren();
+      for (let i = 0; i < 4; i++) list.append(el('div', { class: 'skeleton row-sk' }));
+      $('pager').replaceChildren();
+      try {
+        const data = await api(def.path + '?' + new URLSearchParams(queryParams()).toString());
+        if (!data.items.length && state.offset === 0) list.replaceChildren(el('div', { class: 'empty-state', text: 'কিছু পাওয়া যায়নি' }));
+        if (data.items.length) list.replaceChildren(...data.items.map(def.row));
+        renderPager(data.items.length);
+      } catch (e) {
+        if (e.code === 'unauthorized') showLogin('সেশন শেষ হয়েছে, আবার লগইন করুন');
+        else note(list, e.message);
+      }
+    }
+
+    function renderPager(count) {
+      const bar = $('pager');
+      bar.replaceChildren();
+      const prev = el('button', { type: 'button', text: 'আগের পাতা' });
+      prev.disabled = state.offset === 0;
+      prev.addEventListener('click', () => { state.offset = Math.max(0, state.offset - PAGE); load(); });
+      const next = el('button', { type: 'button', text: 'পরের পাতা' });
+      next.disabled = count < PAGE;
+      next.addEventListener('click', () => { state.offset += PAGE; load(); });
+      bar.append(prev, next);
+    }
+
+    // একটি অ্যাকশন চালিয়ে সফল হলে তালিকা রিফ্রেশ
+    async function act(btn, fn, okText) {
+      btn.disabled = true;
+      try {
+        await fn();
+        flash(okText, true);
+        load();
+      } catch (e) {
+        if (e.code === 'unauthorized') showLogin('সেশন শেষ হয়েছে, আবার লগইন করুন');
+        else flash(e.message, false);
+        btn.disabled = false;
+      }
+    }
+
+    // ───── রো রেন্ডারার ─────
+    const ST = { pending: 'status-pending', verified: 'status-verified', rejected: 'status-rejected', fulfilled: 'status-completed', expired: 'status-expired', contacted: 'status-review', done: 'status-completed', active: 'status-verified', blocked: 'status-rejected' };
+    const badge = (t, cls) => el('span', { class: 'status-badge ' + (cls || ST[t] || ''), text: t });
+    const h4 = (t, bs = []) => el('h4', {}, [t, ...bs]);
+    const p = t => el('p', { text: t });
+    const chk = (t, ctl) => el('label', { class: 'chk' }, [ctl, t]);
+    function item(info, actions = []) {
+      return el('div', { class: 'data-item' }, [el('div', { class: 'data-info' }, info), el('div', { class: 'data-actions' }, actions)]);
+    }
+    const unauth = e => { if (e.code === 'unauthorized') { showLogin('সেশন শেষ হয়েছে, আবার লগইন করুন'); return true; } return false; };
+
+    function renderRequest(r) {
+      const noteIn = input('text', { maxlength: '500', placeholder: 'নোট (ঐচ্ছিক)' });
+      const nexts = REQ_NEXT[r.status] || [];
+      const acts = nexts.length ? [noteIn] : [];
+      for (const next of nexts) {
+        const b = el('button', { type: 'button', class: next === 'rejected' ? 'danger' : '', text: `→ ${next}` });
+        b.addEventListener('click', async () => {
+          if (next === 'rejected' && !(await confirmDialog('অনুরোধ বাতিল', 'এই অনুরোধটি rejected করতে চান?', 'বাতিল করুন'))) return;
+          act(b, () => api(`/admin/api/requests/${encodeURIComponent(r.id)}`, {
+            method: 'PUT', body: { status: next, note: noteIn.value.trim() || null },
+          }), 'অনুরোধ আপডেট হয়েছে');
+        });
+        acts.push(b);
+      }
+      return item([
+        h4(`${r.bloodGroup} · ${r.units} ইউনিট · ${r.hospital}`, [badge(r.status)]),
+        p(`${r.patientName} · ${r.district}${r.upazila ? ' · ' + r.upazila : ''} · প্রয়োজন: ${fmt(r.neededAt)}`),
+        p(`স্বজন: ${r.attendantName} · ${r.contact} · জমা: ${fmt(r.submittedAt)} · রিপোর্ট: ${r.reportCount}`),
+        r.reason ? p(r.reason) : el('span'),
+      ], acts);
+    }
+
+    // দাতার আইডি ধরে দাতা ট্যাবে গিয়ে সেই দাতাকেই দেখায়
+    function jumpToDonor(donorId) {
+      const b = el('button', { type: 'button', text: 'দাতা দেখুন' });
+      b.addEventListener('click', () => {
+        state.tab = 'donors';
+        state.offset = 0;
+        state.prefill = { donor_id: donorId };
+        setNav(false);
+        renderTabs();
+        renderTab();
+      });
+      return b;
+    }
+
+    function renderContact(c) {
+      const sel = selectEl(CONTACT_STATUSES.map(s => [s, s]), c.status);
+      const btn = el('button', { type: 'button', class: 'primary', text: 'সংরক্ষণ' });
+      btn.addEventListener('click', () => act(btn, () => api(`/admin/api/contacts/${encodeURIComponent(c.id)}`, {
+        method: 'PUT', body: { status: sel.value },
+      }), 'স্ট্যাটাস আপডেট হয়েছে'));
+      return item([
+        h4(`${c.patient} · ${c.blood_group} · ${c.units} ইউনিট`, [badge(c.status)]),
+        p(`${c.hospital} · রোগীর পক্ষের ফোন: ${c.phone} · ${fmt(c.submitted_at)}`),
+        p(`দাতা: ${c.donor_name} · ${c.donor_phone} · ${c.donor_district}, ${c.donor_upazila} · আইডি: ${c.donor_id}`),
+      ], [jumpToDonor(c.donor_id), sel, btn]);
+    }
+
+    function renderReport(r) {
+      return item([
+        h4(`${r.target_type === 'donor' ? 'দাতা' : 'অনুরোধ'} · ${r.target_id}`),
+        p(r.reason || '(কারণ লেখা হয়নি)'),
+        p(fmt(r.created_at)),
+      ], r.target_type === 'donor' ? [jumpToDonor(r.target_id)] : []);
+    }
+
+    function renderDonor(d) {
+      const lvl = selectEl([0, 1, 2, 3, 4].map(n => [String(n), `স্তর ${n}`]), String(d.verification_level));
+      const sus = input('checkbox', d.suspicious ? { checked: 'checked' } : {});
+      const can = input('checkbox', d.can_donate ? { checked: 'checked' } : {});
+      const btn = el('button', { type: 'button', class: 'primary', text: 'সংরক্ষণ' });
+      btn.addEventListener('click', () => act(btn, () => api(`/admin/api/donors/${encodeURIComponent(d.id)}`, {
+        method: 'PUT',
+        body: { verificationLevel: Number(lvl.value), suspicious: sus.checked, canDonate: can.checked },
+      }), 'দাতার তথ্য আপডেট হয়েছে'));
+      // রক্তদান নথিভুক্ত (গণনা, শেষ দান ও trust score বাড়ায়)
+      const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+      const donDate = input('date', { value: today, max: today });
+      const donPlace = input('text', { maxlength: '160', placeholder: 'স্থান (ঐচ্ছিক)' });
+      const donBtn = el('button', { type: 'button', text: 'দান নথিভুক্ত' });
+      donBtn.addEventListener('click', async () => {
+        if (!donDate.value) { flash('দানের তারিখ দিন', false); return; }
+        if (!(await confirmDialog('রক্তদান নথিভুক্ত', `${d.name}-এর ${donDate.value} তারিখের দান যোগ করতে চান?`, 'নথিভুক্ত করুন'))) return;
+        act(donBtn, () => api(`/admin/api/donors/${encodeURIComponent(d.id)}/donations`, {
+          method: 'POST',
+          body: { donatedAt: donDate.value, place: donPlace.value.trim() || null },
+        }), 'রক্তদান নথিভুক্ত হয়েছে');
+      });
+      return item([
+        h4(`${d.name} (${d.blood_group})`, d.suspicious ? [badge('সন্দেহজনক', 'status-rejected')] : []),
+        p(`ফোন: ${d.phone} · ${d.district} · ${d.upazila} · রিপোর্ট ${d.report_count} · দান ${d.donation_count} · স্কোর ${d.trust_score} · ${d.badge || ''} · আইডি: ${d.id}`),
+      ], [lvl, chk('সন্দেহজনক', sus), chk('রক্ত দিতে প্রস্তুত', can), btn, donDate, donPlace, donBtn]);
+    }
+
+    function renderUser(u) {
+      const blocked = u.status === 'blocked';
+      const toggle = el('button', { type: 'button', class: blocked ? '' : 'danger', text: blocked ? 'আনব্লক' : 'ব্লক করুন' });
+      toggle.addEventListener('click', async () => {
+        if (!blocked && !(await confirmDialog('ব্যবহারকারী ব্লক', 'এই ব্যবহারকারীকে ব্লক করতে চান?', 'ব্লক করুন'))) return;
+        act(toggle, () => api(`/admin/api/users/${encodeURIComponent(u.id)}`, {
+          method: 'PUT', body: { status: blocked ? 'active' : 'blocked' },
+        }), blocked ? 'আনব্লক হয়েছে' : 'ব্লক করা হয়েছে');
+      });
+      const acts = [toggle];
+      if (u.flagged) {
+        const clear = el('button', { type: 'button', text: 'ফ্ল্যাগ সাফ' });
+        clear.addEventListener('click', () => act(clear, () => api(`/admin/api/users/${encodeURIComponent(u.id)}`, {
+          method: 'PUT', body: { flagged: false },
+        }), 'ফ্ল্যাগ সাফ হয়েছে'));
+        acts.push(clear);
+      }
+      return item([
+        h4(u.phone || u.email || u.id, [badge(u.status)].concat(u.flagged ? [badge('ফ্ল্যাগ করা', 'status-rejected')] : [])),
+        p(`তৈরি: ${fmt(u.created_at)} · শেষ লগইন: ${fmt(u.last_login_at) || '—'}`),
+      ], acts);
+    }
+
+    function renderReveal(r) {
+      return item(
+        [p(`${fmt(r.created_at)} · ইউজার ${r.user_id} → ${r.target_type} ${r.target_id}`)],
+        r.target_type === 'donor' ? [jumpToDonor(r.target_id)] : [],
+      );
+    }
+
+    function renderAudit(a) {
+      const detail = a.detail ? JSON.stringify(a.detail, null, 2) : '';
+      return item([
+        h4(a.action),
+        p(`${a.target_type || ''} ${a.target_id || ''} · ${fmt(a.created_at)}`),
+        detail ? el('pre', { text: detail }) : el('span'),
+      ]);
+    }
+
+    function adminToolbar() {
+      const u = input('text', { maxlength: '64', placeholder: 'ইউজারনেম বা ইমেইল' });
+      const b = el('button', { type: 'button', class: 'primary', text: 'অ্যাডমিন যোগ করুন' });
+      b.addEventListener('click', async () => {
+        await act(b, async () => {
+          await api('/admin/api/admins', { method: 'POST', body: { username: u.value } });
+          u.value = '';
+        }, 'নতুন অ্যাডমিন তৈরি হয়েছে');
+        b.disabled = false;
+      });
+      return [
+        lab('নতুন অ্যাডমিন', u),
+        b,
+        el('p', { class: 'muted', text: 'অস্থায়ী পাসওয়ার্ড সার্ভারের .env-এর ADMIN_TEMP_PASSWORD; প্রথম লগইনে বদলাতে হবে।' }),
+      ];
+    }
+
+    function renderAdmin(a) {
+      const isSuper = a.role === 'superadmin';
+      const acts = [];
+      if (!isSuper) {
+        const del = el('button', { type: 'button', class: 'danger', text: 'ডিলিট' });
+        del.addEventListener('click', async () => {
+          if (!(await confirmDialog('অ্যাডমিন ডিলিট', `"${a.username}" কে ডিলিট করতে চান? তার সব সেশন সাথে সাথে বাতিল হবে।`, 'ডিলিট'))) return;
+          act(del, () => api(`/admin/api/admins/${encodeURIComponent(a.id)}`, { method: 'DELETE' }), 'অ্যাডমিন ডিলিট হয়েছে');
+        });
+        acts.push(del);
+      }
+      const badges = [badge(isSuper ? 'সুপার অ্যাডমিন' : 'অ্যাডমিন', isSuper ? 'status-verified' : 'status-review')];
+      if (a.must_change_password) badges.push(badge('পাসওয়ার্ড বদলায়নি', 'status-pending'));
+      return item([
+        h4(a.username, badges),
+        p(`তৈরি: ${fmt(a.created_at)}${a.created_by ? ' · তৈরি করেছেন: ' + a.created_by : ''} · শেষ লগইন: ${fmt(a.last_login_at) || '—'}`),
+      ], acts);
+    }
+
+    // ───── লগইন / লগআউট ─────
+    async function onLogin(e) {
+      e.preventDefault();
+      const msg = $('login-msg');
+      msg.replaceChildren();
+      try {
+        const d = await api('/admin/api/login', {
+          method: 'POST',
+          body: { username: $('a-user').value, password: $('a-pass').value, turnstileToken: captchaToken('admin') },
+        });
+        csrf = d.csrfToken;
+        me = { username: d.username, role: d.role };
+        $('a-pass').value = '';
+        if (d.mustChangePassword) showPw(true); else showApp();
+      } catch (err) {
+        note(msg, err.message);
+        mountCaptcha('admin');
+      }
+    }
+
+    async function onLogout() {
+      if (!(await confirmDialog('লগআউট', 'আপনি কি লগআউট করতে চান?', 'লগআউট'))) return;
+      try { await api('/admin/api/logout', { method: 'POST' }); } catch (_) { /* ignore */ }
+      showLogin();
+    }
+
+    async function init() {
+      try { config = await api('/api/config', {}, false); } catch (_) { /* ডিফল্ট */ }
+      $('login-form').addEventListener('submit', onLogin);
+      $('logout-btn').addEventListener('click', onLogout);
+      $('pw-logout').addEventListener('click', onLogout);
+      $('pw-form').addEventListener('submit', onPwChange);
+      $('pw-btn').addEventListener('click', () => showPw(false));
+      $('pw-cancel').addEventListener('click', () => { $('pw-view').hidden = true; });
+      $('menu-btn').addEventListener('click', () => setNav(!$('sidebar').classList.contains('open')));
+      $('sb-backdrop').addEventListener('click', () => setNav(false));
+      addEventListener('keydown', e => { if (e.key === 'Escape') setNav(false); });
+      if (await checkSession()) { if (pwForced) showPw(true); else showApp(); }
+    }
+
+    init();
+  })();
+  </script>
 </body>
 </html>

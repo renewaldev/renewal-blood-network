@@ -1,5 +1,9 @@
-# Renewal Blood Network — Python Dependencies
-Flask>=3.0.0
-flask-sock>=0.7.0
-pymysql>=1.1.0
-cryptography>=41.0.0
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncmy
+pydantic-settings
+httpx
+jinja2
+google-auth
+requests

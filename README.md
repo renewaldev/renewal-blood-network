@@ -1,308 +1,264 @@
-<div align="center">
+# Renewal Blood Network
 
-<!-- 3D Gradient Hero Header (Repo-Hosted SVG — Zero External Proxy Dependency) -->
-<img src="static/assets/header.svg" width="100%" alt="Renewal Blood Network Banner" />
+A real-time, volunteer blood-donor network for Bangladesh, covering every district and upazila.
+Donors register, people in need search for donors or post urgent blood requests, and admins verify everything, all from a single server.
 
-<h3>🩸 রক্তের প্রয়োজনে, মানুষের পাশে &nbsp;•&nbsp; Real-Time Voluntary Blood Donor Network</h3>
-
-<!-- Bold For-The-Badge Tech Stack -->
-<p>
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
-  <img src="https://img.shields.io/badge/Flask-3.0%2B-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
-  <img src="https://img.shields.io/badge/MariaDB%20%2F%20MySQL-InnoDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" alt="MariaDB / MySQL" />
-  <img src="https://img.shields.io/badge/WebSockets-Real--Time%20Sync-EA580C?style=for-the-badge&logo=socketdotio&logoColor=white" alt="WebSockets" />
-</p>
-<p>
-  <img src="https://img.shields.io/badge/Cloudflare%20Turnstile-CAPTCHA%20Protected-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloudflare Turnstile" />
-  <img src="https://img.shields.io/badge/Google%20OAuth%202.0-Verified%20Sign--In-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Google OAuth 2.0" />
-  <img src="https://img.shields.io/badge/Leaflet.js-1.9.4%20Geo--Map-199900?style=for-the-badge&logo=leaflet&logoColor=white" alt="Leaflet.js" />
-  <img src="https://img.shields.io/badge/Frontend-HTML5%20%E2%80%A2%20CSS3%20%E2%80%A2%20ES6%2B-E34F26?style=for-the-badge&logo=javascript&logoColor=white" alt="Frontend Stack" />
-</p>
-
-<!-- 3D Glossy (Plastic Style) Supported Blood Groups -->
-<p>
-  <img src="https://img.shields.io/static/v1?label=Supported%20Blood%20Groups&message=8%20Types&color=7f1d1d&style=plastic" alt="8 Blood Groups" />
-  <img src="https://img.shields.io/static/v1?label=&message=A%2B&color=dc2626&style=plastic" alt="A+" />
-  <img src="https://img.shields.io/static/v1?label=&message=A-&color=b91c1c&style=plastic" alt="A-" />
-  <img src="https://img.shields.io/static/v1?label=&message=B%2B&color=dc2626&style=plastic" alt="B+" />
-  <img src="https://img.shields.io/static/v1?label=&message=B-&color=b91c1c&style=plastic" alt="B-" />
-  <img src="https://img.shields.io/static/v1?label=&message=AB%2B&color=dc2626&style=plastic" alt="AB+" />
-  <img src="https://img.shields.io/static/v1?label=&message=AB-&color=b91c1c&style=plastic" alt="AB-" />
-  <img src="https://img.shields.io/static/v1?label=&message=O%2B&color=dc2626&style=plastic" alt="O+" />
-  <img src="https://img.shields.io/static/v1?label=&message=O-&color=991b1b&style=plastic" alt="O-" />
-</p>
-
-<!-- Quick Navigation Links -->
-<p>
-  <a href="#-key-features">Features</a> &nbsp;&bull;&nbsp;
-  <a href="#%EF%B8%8F-system-architecture">Architecture</a> &nbsp;&bull;&nbsp;
-  <a href="#-database-schema">Database Schema</a> &nbsp;&bull;&nbsp;
-  <a href="#-quick-start">Quick Start</a> &nbsp;&bull;&nbsp;
-  <a href="#-api-endpoints">API Reference</a> &nbsp;&bull;&nbsp;
-  <a href="#-security-model">Security</a>
-</p>
-
-</div>
+> Full design notes (in Bengali) live in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 ---
 
-> [!IMPORTANT]
-> **Renewal Blood Network (রিনিউয়েল ব্লাড নেটওয়ার্ক)** is a full-stack, bilingual (**Bengali + English**) voluntary blood donation platform built for fast donor discovery across all districts and upazilas of Bangladesh, emergency blood request verification, real-time WebSocket synchronization, and dedicated admin moderation.
+## Features
+
+**For the public / members**
+- Search donors by blood group, district, upazila, area and availability.
+- Post urgent blood requests (reviewed by an admin before they go public).
+- Donor registration with a profile (blood group, location, availability, phone visibility).
+- Trust score and leaderboard.
+- District-level map of donors.
+- Phone numbers are never shown to guests. Logged-in users reveal them one by one, under quotas and with an audit log.
+- Contact-request flow: if a donor does not want to show their number, the admin connects the two sides.
+- Report abusive donors or requests.
+- Login with phone + 4-digit PIN, or Google Sign-In (optional).
+- Live updates over WebSocket, with a LIVE / SYNC / OFFLINE indicator in the navbar.
+
+**For admins** (`/admin`)
+- Verify, reject or fulfil blood requests; manage donors, contact requests, reports and users.
+- Raise a donor's verification level (affects trust score and reveal quota).
+- Record a verified blood donation for a donor (updates donation count, last donation date, next available date and trust score).
+- View the phone-reveal log and the audit log.
+- Multi-admin support with `superadmin` / `admin` roles, forced password change on first login, optional IP allow-list.
 
 ---
 
-## ✨ Key Features
+## Tech stack
 
-| Module | Capabilities |
-| :--- | :--- |
-| **🩸 Smart Donor Discovery** | Multi-criteria filtering by blood group, district, upazila, neighborhood area, and availability (`available` / `soon`), ranked by dynamic **Trust Score**. |
-| **🗺️ Interactive Geo-Map** | Built with **Leaflet.js (`1.9.4`)** to visualize registered donors and regional coverage across active districts on an interactive map. |
-| **📝 3-Step Donor Onboarding** | Guided multi-step donor registration with inline phone collision detection, optional Google profile autofill, donation eligibility tracking, and 4-digit PIN security. |
-| **🚨 Emergency Blood Queue** | Public emergency blood request submission with hospital details, unit count, attendant phone, anti-bot verification, and community reporting. |
-| **⚡ Real-Time WebSocket Sync** | Dual-server live updates over `/ws/realtime` backed by atomic versioning in the `meta` table — dashboards, donor lists, and admin queues stay synchronized instantly. |
-| **🔐 Google OAuth 2.0 & PIN Auth** | Seamless one-click Google Sign-In / account linking (`oauth_accounts`), paired with salted `scrypt` 4-digit PIN authentication and 30-day HTTP Bearer sessions. |
-| **🛡️ Cloudflare Turnstile Guard** | Bot protection enforced at Step 1 of Registration, Login, Emergency Request, Donor Contact Request, and Admin Authentication. |
-| **🏆 Trust Score & Leaderboard** | Automated trust score engine (`calc_trust_score`) based on verification levels (`0–4`), donation history, and zero-report standing, powering community leaderboards. |
-| **🛠️ Dedicated Admin Console** | Standalone management portal on port `8081` (`admin_server.py`) to verify emergency blood requests, manage donor verification tiers, inspect suspicious flags, and review contact leads. |
+| Layer | Technology |
+|---|---|
+| Backend | Python, FastAPI, Uvicorn |
+| Database | MySQL 8+ / MariaDB 10.6+ (InnoDB, `utf8mb4`) via SQLAlchemy Core + `asyncmy` |
+| Frontend | Two single-file SPAs: `templates/index.html`, `templates/admin.html` (inline CSS/JS, CSP nonce) |
+| Real-time | WebSocket `/ws/realtime` backed by a `change_log` table (no Redis needed) |
+| Bot protection | Cloudflare Turnstile |
+| Sessions | `HttpOnly` cookie + CSRF token (`X-CSRF-Token`) |
+| Validation / config | Pydantic v2, pydantic-settings |
 
 ---
 
-## 🏗️ System Architecture
+## Project layout
 
-Both the **Public Web Server** (`server.py` on port `5500`) and the **Admin Dashboard Server** (`admin_server.py` on port `8081`) share the unified [`db.py`](db.py) MySQL/MariaDB data access layer and synchronize state in real time.
-
-```mermaid
-flowchart TD
-    UserBrowser["Public Browser SPA (HTML5 / ES6 Modules)"] -->|HTTP REST & Static Assets| PublicAPI["Public Server - server.py (Port 5500)"]
-    UserBrowser -->|WebSocket /ws/realtime| PublicAPI
-
-    AdminBrowser["Admin Panel SPA (templates/admin.html)"] -->|Bearer Auth + Turnstile| AdminAPI["Admin Server - admin_server.py (Port 8081)"]
-    AdminBrowser -->|WebSocket /ws/realtime| AdminAPI
-
-    PublicAPI -->|Turnstile Siteverify| Cloudflare["Cloudflare Turnstile API"]
-    AdminAPI -->|Turnstile Siteverify| Cloudflare
-    PublicAPI -->|ID Token Verification| GoogleAuth["Google Identity / OAuth 2.0"]
-
-    PublicAPI --> DataLayer["Shared Data Layer - db.py (PyMySQL DictCursor)"]
-    AdminAPI --> DataLayer
-
-    DataLayer --> MariaDB[("MariaDB / MySQL - renewal_blood (InnoDB, utf8mb4)")]
+```
+app.py            FastAPI app, middleware, public API, reveal logic, pages
+admin.py          Admin login, requests moderation, audit helper
+admin_ext.py      Admin: donors, donations, contacts, reports, users, admins, logs
+features.py       Contact requests, reports, Google login, OTP endpoints
+realtime.py       WebSocket hub + change_log poller
+trust.py          Trust score and badge calculation
+security.py       PIN hashing, tokens, sessions, CSRF, Turnstile, client IP
+ratelimit.py      Rate limiter (memory / mysql) and login lockout
+passwords.py      Admin password hashing (scrypt) and rules
+db.py             Async engine, helpers, schema, bump_version()
+config.py         Settings loaded from .env, production startup checks
+schemas.py        Pydantic request models and input validation
+jobs.py           Background tasks (hourly cleanup, daily expiry)
+otp.py, sms.py    SMS OTP plumbing (disabled by default)
+errors.py         ApiError and error handlers
+templates/        index.html (public SPA), admin.html (admin SPA)
+static/           Geo data (bd-geo.json), fonts, assets
+tools/build_geo.py  Builds static/data/bd-geo.json from district/upazila files
 ```
 
 ---
 
-## 🗄️ Database Schema
+## Quick start (local development)
 
-All relational data is stored in **MySQL / MariaDB** using `InnoDB` with `utf8mb4_unicode_ci` encoding for complete Bengali Unicode support.
+### 1. Requirements
+- Python 3.12 or 3.13 recommended. Very new Python versions may lack prebuilt wheels for some dependencies.
+- A running MySQL 8+ / MariaDB server. The DB user needs the `CREATE DATABASE` privilege, because the app creates the database and tables on first start.
 
-```mermaid
-erDiagram
-    users ||--o{ oauth_accounts : "links"
-    users ||--o{ sessions : "owns"
-    users ||--o| donors : "registers as"
-    users ||--o{ blood_requests : "submits"
-    users ||--o{ contact_requests : "initiates"
-    donors ||--o{ contact_requests : "receives"
-
-    users {
-        varchar id PK
-        varchar phone UK
-        varchar email
-        varchar pwd_hash
-        varchar pwd_salt
-        datetime created_at
-    }
-    oauth_accounts {
-        varchar id PK
-        varchar user_id FK
-        varchar provider
-        varchar provider_user_id
-        varchar email
-        varchar name
-    }
-    sessions {
-        varchar token PK
-        varchar user_id FK
-        datetime expires_at
-    }
-    donors {
-        varchar id PK
-        varchar user_id FK
-        varchar name
-        varchar phone UK
-        varchar blood_group
-        varchar district
-        int trust_score
-        varchar availability
-    }
-    blood_requests {
-        varchar id PK
-        varchar user_id FK
-        varchar patient_name
-        varchar blood_group
-        int units
-        varchar status
-    }
-    contact_requests {
-        varchar id PK
-        varchar user_id FK
-        varchar donor_id FK
-        varchar patient
-        varchar status
-    }
-    meta {
-        varchar mkey PK
-        text mval
-        datetime updated_at
-    }
-```
-
-<details>
-<summary><b>📂 Click to expand Full Project Directory Structure</b></summary>
-
-```text
-renewal-blood-network/
-├── .env.example            # Safe environment configuration template
-├── db.py                   # Pure MySQL/MariaDB driver, schema auto-init & data models
-├── server.py               # Public REST API, WebSocket sync & SPA server (Port 5500)
-├── admin_server.py         # Admin REST API & SPA server (Port 8081)
-├── requirements.txt        # Python dependencies (Flask, flask-sock, pymysql, cryptography)
-├── start-server.bat        # Windows launcher for Public Server
-├── start-admin.bat         # Windows launcher for Admin Server
-├── templates/
-│   ├── index.html          # Public Single-Page Application entry point
-│   └── admin.html          # Admin Control Panel UI
-└── static/
-    ├── assets/             # header.svg, footer.svg
-    ├── css/                # Public stylesheets (main, animations, components, pages)
-    ├── js/                 # Public SPA scripts (app, data, donor, emergency, dashboard, map, leaderboard)
-    └── admin/
-        ├── css/            # Admin stylesheet suite
-        └── js/             # Admin scripts (app, admin, data)
-```
-
-</details>
-
----
-
-## 🚀 Quick Start
-
-### 1. Prerequisites
-- **Python 3.10+**
-- **MySQL 8.0+** or **MariaDB 10.6+ / 13.x** running locally or remotely
-
-### 2. Install Dependencies
+### 2. Install
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Provision Database & Configure Environment
-Create an empty database named `renewal_blood` in MariaDB / MySQL:
-```sql
-CREATE DATABASE IF NOT EXISTS renewal_blood
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-```
-
-Copy `.env.example` to `.env` and fill in your credentials:
+### 3. Configure
 ```bash
 cp .env.example .env
 ```
-
-> [!TIP]
-> **Schema Auto-Initialization:** When either `server.py` or `admin_server.py` starts for the first time, [`db.py`](db.py) automatically calls `init_db()` to create all 7 tables, foreign keys, and performance indexes in MariaDB/MySQL.
-
-<details>
-<summary><b>⚙️ Environment Variables Reference (<code>.env</code>)</b></summary>
-
-| Variable | Description | Example / Default |
-| :--- | :--- | :--- |
-| `DB_TYPE` | Active database engine | `mysql` |
-| `DB_HOST` | MariaDB / MySQL server host | `127.0.0.1` |
-| `DB_PORT` | MariaDB / MySQL port | `3306` |
-| `DB_USER` | Database user | `root` |
-| `DB_PASSWORD` | Database password *(keep strictly in `.env`)* | `your_database_password` |
-| `DB_NAME` | Target database schema name | `renewal_blood` |
-| `ADMIN_PASSWORD` | Admin panel login password *(Port `8081`)* | `your_admin_password` |
-| `CLOUDFLARE_TURNSTILE_SITE_KEY` | Public Cloudflare Turnstile Site Key | `1x00000000000000000000AA` *(test)* |
-| `CLOUDFLARE_TURNSTILE_SECRET_KEY` | Private Cloudflare Turnstile Secret Key | `1x0000000000000000000000000000000AA` *(test)* |
-| `TURNSTILE_ENABLED` | Toggle Turnstile server-side validation | `true` |
-| `GOOGLE_CLIENT_ID` | Google OAuth 2.0 Web Client ID | `your-client-id.apps.googleusercontent.com` |
-| `GOOGLE_LOGIN_ENABLED` | Enable/disable Google Sign-In flow | `true` |
-
-</details>
-
-### 4. Run the Servers
-
-Start the **Public Website & API** (http://localhost:5500):
+Minimum changes for local development:
+```env
+APP_ENV=development
+COOKIE_SECURE=false
+TURNSTILE_ENABLED=false
+RATE_LIMIT_BACKEND=memory
+WORKERS=1
+ALLOWED_ORIGINS=http://localhost:5500,http://127.0.0.1:5500
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+```
+In production the secrets below are mandatory (the app refuses to start without them):
+`DB_USER`, `DB_PASSWORD`, `PIN_PEPPER`, `CSRF_SECRET`, `ADMIN_TEMP_PASSWORD`, `ALLOWED_ORIGINS`.
+Generate secrets (at least 32 bytes) with:
 ```bash
-python server.py --port 5500
-# Or on Windows: start-server.bat
+python -c "import secrets; print(secrets.token_urlsafe(48))"
 ```
 
-Start the **Admin Dashboard Server** (http://localhost:8081) in another terminal:
+### 4. Run
 ```bash
-cd admin
-python admin_server.py --port 8081
-# Or on Windows: start-admin.bat
+uvicorn app:app --host 127.0.0.1 --port 5500 --proxy-headers --reload
 ```
+Open `http://localhost:5500`. On first start the app creates the database, the tables and a super admin (`SUPERADMIN_USERNAME`, password from `ADMIN_TEMP_PASSWORD`). The admin panel is at `/admin`, and the password must be changed at first login.
+
+> If `OFFLINE` stays in the navbar, the WebSocket is being rejected. The most common cause is an `ALLOWED_ORIGINS` value that does not exactly match the address in your browser (scheme, host and port).
 
 ---
 
-## 📡 API Endpoints
+## Configuration
 
-<details>
-<summary><b>🔌 Click to view Public REST API, Admin API & WebSocket Endpoints</b></summary>
+All settings come from `.env` (see `.env.example` for every variable with comments). Highlights:
 
-### Public Server (`http://localhost:5500`)
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/health` | Service health & uptime status |
-| `GET` | `/api/config` | Public client config (Turnstile & Google OAuth flags) |
-| `GET` | `/api/realtime/version` | Current `data_version` and live aggregate donor/request metrics |
-| `WS` | `/ws/realtime` | Real-time push notifications whenever database records change |
-| `POST` | `/api/auth/signup` | Register user account with phone, 4-digit PIN & Turnstile verification |
-| `POST` | `/api/auth/login` | Authenticate via phone & PIN + Turnstile verification |
-| `POST` | `/api/auth/google` | Verify Google ID Token and sign in / auto-create or link user |
-| `GET` | `/api/auth/me` | Return current authenticated user profile (`Bearer` token) |
-| `GET` | `/api/auth/check-phone` | Check if a phone number is already registered |
-| `POST` | `/api/auth/logout` | Invalidate active session token |
-| `GET` | `/api/donors` | List registered donors (with public phone masking applied) |
-| `GET` | `/api/donors/search` | Filter donors by `bloodGroup`, `district`, `upazila`, `area`, `availability` |
-| `POST` | `/api/donors` | Create donor profile (supports linked user & Turnstile) |
-| `GET` / `PUT` | `/api/donors/<id>` | Fetch or update donor profile & availability |
-| `GET` / `POST` | `/api/requests` | List or submit urgent blood requests |
-| `PUT` | `/api/requests/<id>` | Update or flag/report an existing request |
-| `GET` / `POST` | `/api/contacts` | List or send donor contact request |
-| `PUT` | `/api/contacts/<id>` | Update contact request status |
+| Variable | Purpose |
+|---|---|
+| `APP_ENV` | `production` enforces strict startup checks; `development` relaxes them |
+| `ALLOWED_ORIGINS` | Allowed Origins for HTTP and the WebSocket handshake |
+| `RATE_LIMIT_BACKEND` | `memory` (single worker) or `mysql` (required if `WORKERS > 1` in production) |
+| `TURNSTILE_ENABLED` | Must be `true` in production |
+| `TRUSTED_PROXIES` | Proxies whose `X-Forwarded-For` / `CF-Connecting-IP` are trusted |
+| `ADMIN_IP_ALLOWLIST` | Optional CIDR list allowed to reach `/admin` |
+| `REVEAL_QUOTA_NEW`, `REVEAL_QUOTA_VERIFIED`, `REVEAL_HOURLY_LIMIT`, `REVEAL_NEWACCOUNT_LIMIT` | Phone-reveal quotas (see below) |
 
-### Admin Server (`http://localhost:8081`)
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/api/admin/login` | Authenticate with `ADMIN_PASSWORD` + Turnstile CAPTCHA |
-| `GET` / `PUT` | `/api/donors`, `/api/donors/<id>` | Full unmasked donor moderation, verification levels & trust updates |
-| `GET` / `PUT` | `/api/requests`, `/api/requests/<id>` | Approve, verify, or reject emergency blood requests |
-| `GET` / `PUT` | `/api/contacts`, `/api/contacts/<id>` | Monitor and resolve donor-patient contact requests |
-
-</details>
+Settings are cached at startup, so restart the server after editing `.env`.
 
 ---
 
-## 🔒 Security Model
+## How it works
 
-> [!NOTE]
-> Security hygiene is built into both runtime execution and repository configuration:
+### Real-time updates
+Every write bumps a version in the `change_log` table and the server broadcasts a small `{"t":"change","v":…,"scopes":[…]}` signal over `/ws/realtime`. The WebSocket **never carries sensitive data**, only "something changed" signals. The browser then re-fetches the affected data through the normal API. Each worker also polls `change_log` every second so changes made by other workers reach its clients (no Redis needed).
 
-- **Zero Hardcoded Secrets:** Database passwords, Turnstile secret keys, Google Client IDs, and Admin passwords are loaded exclusively from `.env` and never committed to Git.
-- **Cryptographic PIN Storage:** User 4-digit PINs are hashed with Python's native `hashlib.scrypt` (`N=16384, r=8, p=1, dklen=64`) using unique per-user random 16-byte salts.
-- **Public Privacy Masking:** Public donor directory responses mask phone numbers (`0171***233`) unless viewed through verified/authenticated workflows.
-- **SQL Injection Safe:** Every MariaDB/MySQL query uses parameterized prepared-statement bindings (`%s`) wrapped cleanly inside [`MySQLCursorWrapper`](db.py) with transactional commit/rollback guards.
+Client behaviour: automatic reconnect with exponential backoff and jitter, ping every 25 s, refresh of missed changes after a reconnect, and pause while the tab is hidden.
+
+Public scopes: `donors`, `requests`, `stats`, `leaderboard`. Admin scopes (admin channel only): `admin_requests`, `admin_contacts`, `admin_donors`, `admin_reports`.
+
+### Trust score and badges
+Computed from scratch on every relevant change (`trust.py`):
+
+```
+score = verification-level points (max 80)
+      + 2 x min(donation_count, 10)        (max 20)
+      + 5 if the donor has no reports
+capped at 100
+```
+Badges: `registered` < 25 <= `bronze` < 50 <= `silver` < 75 <= `gold`. The thresholds are provisional.
+
+### Phone reveal quotas
+Guests never see numbers. A logged-in user may reveal a **new** number only within these rolling-window limits (re-viewing a number already revealed is free):
+
+| Limit | Default |
+|---|---|
+| New numbers per 24 h (no profile or verification level 0) | 5 |
+| New numbers per 24 h (verification level >= 1) | 20 |
+| New numbers per hour (everyone) | 10 |
+| New numbers in the first hour of a new account | 2 |
+
+Every reveal needs a Turnstile check and is written to `phone_reveals`. If more than 3 different accounts reveal numbers from one IP within 24 h, those accounts are flagged for admin review.
+
+### Security notes
+- PINs are hashed with a server-side pepper; admin passwords use scrypt.
+- Strict CSP with per-request nonce; `HttpOnly` cookies plus CSRF tokens; nothing sensitive in `localStorage`.
+- WebSocket handshake checks `Origin` (blocks cross-site WebSocket hijacking).
+- Layered rate limiting (edge, application, account lockout); Turnstile fails closed.
 
 ---
 
-<div align="center">
+## API overview
 
-<!-- 3D Wave Footer (Repo-Hosted SVG) -->
-<img src="static/assets/footer.svg" width="100%" alt="Renewal Blood Network Footer" />
+| Area | Endpoints |
+|---|---|
+| Public | `GET /api/config`, `/api/stats`, `/api/leaderboard`, `/api/map`, `/api/donors/search`, `/api/requests`, `/api/health` |
+| Auth | `POST /api/auth/signup`, `/login`, `/logout`, `/google`, `/link-phone`; `GET /api/auth/me` |
+| Donors | `POST /api/donors`, `PUT /api/donors/{id}`, `POST /api/donors/{id}/reveal` |
+| Requests | `POST /api/requests`, `POST /api/requests/{id}/reveal` |
+| Contact / reports | `POST /api/contacts`, `POST /api/{donors\|requests}/{id}/report` |
+| Admin | `/admin/api/*`: requests, donors, `POST /donors/{id}/donations`, contacts, reports, users, reveals, audit, admins |
+| Real-time | `WS /ws/realtime` |
 
-</div>
+---
+
+## Deployment notes
+
+- Run behind Nginx or Cloudflare with TLS: `uvicorn app:app --host 127.0.0.1 --port 5500 --workers 2 --proxy-headers`.
+- With `WORKERS > 1`, set `RATE_LIMIT_BACKEND=mysql`.
+- Nginx must forward WebSocket upgrades for `/ws/realtime`:
+  `proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection "upgrade"; proxy_read_timeout 75s;` and should limit connections per IP (e.g. `limit_conn`, max 5).
+- Add your `wss://` origin to the CSP `connect-src` (the app builds it from `ALLOWED_ORIGINS`).
+- `ARCHITECTURE.md` references a systemd unit at `deploy/renewal.service`; that file is not included in this repository snapshot.
+- Pin exact dependency versions for production: after a successful run, `pip freeze > requirements.lock` and deploy from the lock file.
+
+---
+
+## Known limitations and incomplete features
+
+These were found by reading the code. They are listed so nobody assumes they work.
+
+### Features that exist but have no effect
+| Item | What happens today |
+|---|---|
+| **`suspicious` donors** | A donor with 3 or more reports gets `suspicious = TRUE`, but search, display and phone reveal ignore it. Only the admin panel shows a badge. |
+| **`can_donate` checkbox** | Stored and editable, but search does not filter on it, so donors who untick "ready to donate" still appear. |
+| **`flagged` users** | Set by the IP-abuse check, but flagged users face no restriction. It is only a hint for admins. |
+| **Badges** (`gold` / `silver` / `bronze`) | Calculated on the server and styled in CSS, but not rendered anywhere in the UI. Only the numeric trust score is shown. Badge thresholds are marked provisional (`TODO(spec)` in `trust.py`). |
+| **Availability after a donation** | Recording a donation sets `next_available` (+90 days) but does not change `availability`. The daily job only moves donors back to `available`, never away from it, so a donor who just gave blood still appears "available". |
+
+### Missing functionality
+- **No donation history view and no way to delete or correct a recorded donation.** Admins can only add donations, so a mistaken entry cannot be undone without editing the database.
+- **Donors cannot record their own donations**; only admins can, so `donation_count` stays `0` until an admin adds entries. Existing counts are never recomputed.
+- **Verification history is write-only.** Changes to a donor's verification level are saved in `verification_events`, but nothing displays them.
+- **No production SMS provider.** `OTP_ENABLED=true` is rejected in production, so phone numbers stay unverified (this is why the reveal quotas are strict). `SMS_PROVIDER=log` is for development only.
+- **No admin tooling for flagged users** beyond clearing the flag.
+- **Quota is the same for emergencies.** A new user searching for blood urgently can reveal only 2 numbers in the first hour and 5 per day. Consider a looser quota for verified emergency requests.
+
+### Unused database schema
+These columns and tables are created but never written or read:
+- `donors.alt_phone`, `donors.emergency_call`, `donors.donation_types`, `donors.contact_prefs`, `donors.lat`, `donors.lng`
+- `meta` table
+
+The map works at district level and does not use `lat` / `lng`.
+
+### Dead or leftover code
+- `GET /api/auth/check-phone` exists on the backend but the UI never calls it.
+- `ADMIN_PASSWORD_HASH` is a legacy fallback for seeding the super admin when `ADMIN_TEMP_PASSWORD` is empty.
+
+### Disabled by configuration (not broken)
+- **SMS OTP**: off by default (`OTP_ENABLED=false`).
+- **Google Sign-In**: off by default (`GOOGLE_LOGIN_ENABLED=false`); set `GOOGLE_CLIENT_ID` to enable.
+- **Admin real-time updates**: the admin panel (`admin.html`) does not yet connect to the WebSocket, so admin lists do not refresh live. Only the public site does.
+
+### Other things to keep in mind
+- Dependencies in `requirements.txt` are unpinned; behaviour can change with new releases. Use a lock file for production.
+- The project has no automated tests.
+- Trust-score points for donations are only meaningful once donations are actually being recorded.
+
+---
+
+## Suggested roadmap
+
+1. Hide or rank down `suspicious` donors; respect `can_donate` in search.
+2. After a donation, set `availability` to `soon` automatically.
+3. Show badges on donor cards.
+4. Donation history with admin-side correction/removal.
+5. Admin WebSocket client for live admin lists.
+6. Looser reveal quota for verified emergency requests; admin-assisted contact as a fallback when the quota runs out.
+7. Remove or implement the unused schema (`lat`/`lng`, `donation_types`, `contact_prefs`, `alt_phone`, `emergency_call`, `meta`).
+8. Add tests and a CI pipeline; commit a dependency lock file.
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome. Please keep user-facing text consistent with the existing bilingual (Bengali / English) UI, and never send sensitive data (phone numbers, notes) over the WebSocket.
+
+## License
+
+No license has been specified yet. Add one before publishing.
