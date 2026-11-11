@@ -33,3 +33,4 @@ if not exist ".env" (
 echo.
 echo [INFO] Server stopped (exit code: %errorlevel%).
 pause
+
