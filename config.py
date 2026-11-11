@@ -44,6 +44,7 @@ class Settings(BaseSettings):
     session_ttl_days: int = 30
     admin_session_ttl_hours: int = 8
     cookie_secure: bool = True
+    csp_enabled: bool = True  # dev-এ CSP_ENABLED=false করা যাবে; production-এ বন্ধ করা যাবে না
     allowed_origins: str = ""
 
     reveal_quota_new: int = 5
@@ -106,6 +107,8 @@ class Settings(BaseSettings):
             raise ValueError("WORKERS > 1 হলে RATE_LIMIT_BACKEND=mysql লাগবে")
         if not self.turnstile_enabled:
             raise ValueError("প্রোডাকশনে TURNSTILE_ENABLED=false সম্ভব নয়")
+        if not self.csp_enabled:
+            raise ValueError("প্রোডাকশনে CSP_ENABLED=false সম্ভব নয়")
         if self.otp_enabled and self.sms_provider in ("none", "log"):
             raise ValueError("OTP চালু করতে প্রোডাকশন SMS provider লাগবে (এখনো যুক্ত হয়নি)")
         return self

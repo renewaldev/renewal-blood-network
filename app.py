@@ -135,7 +135,7 @@ async def edge_middleware(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "geolocation=(), camera=(), microphone=()"
-    if response.headers.get("content-type", "").startswith("text/html"):
+    if get_settings().csp_enabled and response.headers.get("content-type", "").startswith("text/html"):
         response.headers["Content-Security-Policy"] = _csp(request.state.nonce)
     if path.startswith("/static/"):
         response.headers["Cache-Control"] = "public, max-age=86400"
